@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "generated_at": "2026-01-13T04:33:35.990Z",
+  "source": "live",
+  "policies": [
+    {
+      "policy_id": "REF-001",
+      "title": "Refund eligibility for PBT services",
+      "status": "active",
+      "type": "perpetual",
+      "domain": "merchandise",
+      "category_path": "live/perpetual/merchandise",
+      "effective_from": "2025-01-01",
+      "effective_to": null,
+      "priority": 2,
+      "owner_team": "Policy Ops",
+      "approvers": [
+        "Head of Support"
+      ],
+      "jurisdiction": [
+        "Global"
+      ],
+      "applies_to": [
+        "Support agents"
+      ],
+      "tags": [
+        "refunds",
+        "support"
+      ],
+      "path": "live/perpetual/merchandise/REF-001_refunds.md",
+      "sections": {
+        "Summary": "We allow refunds for clear billing errors or service outages within the last 30 days.",
+        "When it applies": "Use this policy when a customer requests a refund for PBT services.",
+        "Rules": "- Refunds require evidence of a billing mistake or documented outage.\n- Partial refunds are preferred when only part of the service was impacted.\n- Refunds beyond 30 days need escalation approval.",
+        "Allowed actions": "- Approve full refunds for billing errors within 30 days.\n- Approve partial refunds for limited outages within 30 days.",
+        "Disallowed actions": "- Grant refunds without documented evidence.\n- Approve refunds beyond 30 days without escalation.",
+        "Required wording": "\"I can help with a refund for a verified billing issue or outage within the last 30 days.\"",
+        "Escalation": "Escalate to the Support Lead for exceptions or refunds beyond 30 days.",
+        "Examples": "A customer was double-charged last week. Approve a full refund for the duplicate charge."
+      },
+      "raw_markdown": "---\npolicy_id: REF-001\ntitle: \"Refund eligibility for PBT services\"\nstatus: active\ntype: perpetual\ndomain: merchandise\neffective_from: 2025-01-01\neffective_to:\npriority: 2\nowner_team: \"Policy Ops\"\napprovers:\n  - \"Head of Support\"\njurisdiction:\n  - \"Global\"\napplies_to:\n  - \"Support agents\"\ntags:\n  - \"refunds\"\n  - \"support\"\n---\n\n# Summary\nWe allow refunds for clear billing errors or service outages within the last 30 days.\n\n# When it applies\nUse this policy when a customer requests a refund for PBT services.\n\n# Rules\n- Refunds require evidence of a billing mistake or documented outage.\n- Partial refunds are preferred when only part of the service was impacted.\n- Refunds beyond 30 days need escalation approval.\n\n# Allowed actions\n- Approve full refunds for billing errors within 30 days.\n- Approve partial refunds for limited outages within 30 days.\n\n# Disallowed actions\n- Grant refunds without documented evidence.\n- Approve refunds beyond 30 days without escalation.\n\n# Required wording\n\"I can help with a refund for a verified billing issue or outage within the last 30 days.\"\n\n# Escalation\nEscalate to the Support Lead for exceptions or refunds beyond 30 days.\n\n# Examples\nA customer was double-charged last week. Approve a full refund for the duplicate charge.\n"
+    },
+    {
+      "policy_id": "TEMP-2026-01-EXAMPLE",
+      "title": "Temporary waiver for holiday surge response",
+      "status": "active",
+      "type": "temporary",
+      "domain": "merchandise",
+      "category_path": "live/temporary/merchandise",
+      "effective_from": "2026-01-10",
+      "effective_to": "2026-02-15",
+      "priority": 1,
+      "owner_team": "Policy Ops",
+      "approvers": [
+        "Head of Support"
+      ],
+      "jurisdiction": [
+        "Global"
+      ],
+      "applies_to": [
+        "Support agents"
+      ],
+      "tags": [
+        "temporary",
+        "surge"
+      ],
+      "path": "live/temporary/merchandise/TEMP-2026-01_example.md",
+      "sections": {
+        "Summary": "During the holiday surge, agents may waive one late fee per customer.",
+        "When it applies": "Use this policy when handling support tickets related to late fees during the surge period.",
+        "Rules": "- Only one late fee waiver per customer during the effective period.\n- Document the waiver in the ticket notes.",
+        "Allowed actions": "- Waive a single late fee for eligible customers.\n- Communicate the waiver and remaining balance.",
+        "Disallowed actions": "- Waive multiple late fees for the same customer.\n- Apply the waiver outside the effective dates.",
+        "Required wording": "\"As a one-time courtesy during the holiday surge, I can waive this late fee.\"",
+        "Escalation": "Escalate if the customer requests additional waivers or exceptions.",
+        "Examples": "A customer incurred a late fee on 2026-01-12. Waive the fee and note the exception."
+      },
+      "raw_markdown": "---\npolicy_id: TEMP-2026-01-EXAMPLE\ntitle: \"Temporary waiver for holiday surge response\"\nstatus: active\ntype: temporary\ndomain: merchandise\neffective_from: 2026-01-10\neffective_to: 2026-02-15\npriority: 1\nowner_team: \"Policy Ops\"\napprovers:\n  - \"Head of Support\"\njurisdiction:\n  - \"Global\"\napplies_to:\n  - \"Support agents\"\ntags:\n  - \"temporary\"\n  - \"surge\"\n---\n\n# Summary\nDuring the holiday surge, agents may waive one late fee per customer.\n\n# When it applies\nUse this policy when handling support tickets related to late fees during the surge period.\n\n# Rules\n- Only one late fee waiver per customer during the effective period.\n- Document the waiver in the ticket notes.\n\n# Allowed actions\n- Waive a single late fee for eligible customers.\n- Communicate the waiver and remaining balance.\n\n# Disallowed actions\n- Waive multiple late fees for the same customer.\n- Apply the waiver outside the effective dates.\n\n# Required wording\n\"As a one-time courtesy during the holiday surge, I can waive this late fee.\"\n\n# Escalation\nEscalate if the customer requests additional waivers or exceptions.\n\n# Examples\nA customer incurred a late fee on 2026-01-12. Waive the fee and note the exception.\n"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "generated_at": "2026-01-13T04:33:35.991Z",
+  "source": "draft",
+  "policies": [
+    {
+      "policy_id": "REF-NEW",
+      "title": "Refund policy rewrite (draft)",
+      "status": "draft",
+      "type": "perpetual",
+      "domain": "merchandise",
+      "category_path": "draft/in-progress/merchandise",
+      "effective_from": null,
+      "effective_to": null,
+      "priority": 3,
+      "owner_team": "Policy Ops",
+      "approvers": [
+        "Head of Support"
+      ],
+      "jurisdiction": [
+        "Global"
+      ],
+      "applies_to": [
+        "Support agents"
+      ],
+      "tags": [
+        "refunds",
+        "draft"
+      ],
+      "path": "draft/in-progress/merchandise/REF-NEW_refunds-rewrite.md",
+      "sections": {
+        "Summary": "Draft rewrite of the refund policy for review.",
+        "When it applies": "Use during internal policy review and testing.",
+        "Rules": "- Draft content only; do not apply to customers.",
+        "Allowed actions": "- Review and provide feedback on proposed language.",
+        "Disallowed actions": "- Enforce this draft policy in production.",
+        "Required wording": "\"This is a draft policy under review and not yet effective.\"",
+        "Escalation": "Escalate questions to Policy Ops.",
+        "Examples": "A reviewer flags missing edge cases and requests clarification."
+      },
+      "raw_markdown": "---\npolicy_id: REF-NEW\ntitle: \"Refund policy rewrite (draft)\"\nstatus: draft\ntype: perpetual\ndomain: merchandise\neffective_from:\neffective_to:\npriority: 3\nowner_team: \"Policy Ops\"\napprovers:\n  - \"Head of Support\"\njurisdiction:\n  - \"Global\"\napplies_to:\n  - \"Support agents\"\ntags:\n  - \"refunds\"\n  - \"draft\"\n---\n\n# Summary\nDraft rewrite of the refund policy for review.\n\n# When it applies\nUse during internal policy review and testing.\n\n# Rules\n- Draft content only; do not apply to customers.\n\n# Allowed actions\n- Review and provide feedback on proposed language.\n\n# Disallowed actions\n- Enforce this draft policy in production.\n\n# Required wording\n\"This is a draft policy under review and not yet effective.\"\n\n# Escalation\nEscalate questions to Policy Ops.\n\n# Examples\nA reviewer flags missing edge cases and requests clarification.\n"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "generated_at": "2026-01-13T04:33:35.990Z",
+  "policies": [
+    {
+      "policy_id": "REF-001",
+      "title": "Refund eligibility for PBT services",
+      "status": "active",
+      "type": "perpetual",
+      "effective_from": "2025-01-01",
+      "effective_to": null,
+      "tags": [
+        "refunds",
+        "support"
+      ],
+      "path": "live/perpetual/merchandise/REF-001_refunds.md"
+    },
+    {
+      "policy_id": "TEMP-2026-01-EXAMPLE",
+      "title": "Temporary waiver for holiday surge response",
+      "status": "active",
+      "type": "temporary",
+      "effective_from": "2026-01-10",
+      "effective_to": "2026-02-15",
+      "tags": [
+        "temporary",
+        "surge"
+      ],
+      "path": "live/temporary/merchandise/TEMP-2026-01_example.md"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "pbt-policies",
+  "private": true,
+  "scripts": {
+    "build:exports": "ts-node scripts/build-policy-exports.ts"
+  },
+  "dependencies": {
+    "fast-glob": "^3.3.2",
+    "gray-matter": "^4.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
