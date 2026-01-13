@@ -64,3 +64,11 @@ This generates:
 - `exports/policies.json` (active live policies only; the only export agents read)
 - `exports/policies-draft.json` (all draft policies for app testing)
 - `exports/index.json` (minimal metadata index)
+
+## GitHub Pages exports
+
+JSON exports are published to GitHub Pages on each push to `main`:
+
+- `https://<owner>.github.io/<repo>/policies.json`
+- `https://<owner>.github.io/<repo>/index.json`
+- `https://<owner>.github.io/<repo>/policies-draft.json` (only when present)
