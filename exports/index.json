@@ -1,19 +1,70 @@
 {
   "version": 1,
-  "generated_at": "2026-01-13T04:33:35.990Z",
+  "generated_at": "2026-01-13T04:56:19.819Z",
   "policies": [
     {
-      "policy_id": "REF-001",
-      "title": "Refund eligibility for PBT services",
+      "policy_id": "REF-MERCH-001",
+      "title": "Returns, refunds, and exchanges for merchandise",
       "status": "active",
       "type": "perpetual",
       "effective_from": "2025-01-01",
       "effective_to": null,
       "tags": [
+        "returns",
         "refunds",
-        "support"
+        "exchanges",
+        "warranty",
+        "merchandise"
       ],
-      "path": "live/perpetual/merchandise/REF-001_refunds.md"
+      "path": "live/perpetual/merchandise/REF-MERCH-001_returns-and-refunds.md"
+    },
+    {
+      "policy_id": "REF-MERCH-002",
+      "title": "Shipping and delivery for merchandise",
+      "status": "active",
+      "type": "perpetual",
+      "effective_from": "2025-01-01",
+      "effective_to": null,
+      "tags": [
+        "shipping",
+        "delivery",
+        "tracking",
+        "duties",
+        "taxes"
+      ],
+      "path": "live/perpetual/merchandise/REF-MERCH-002_shipping-and-delivery.md"
+    },
+    {
+      "policy_id": "REF-MERCH-AU-001",
+      "title": "Australian Consumer Law overlay for merchandise",
+      "status": "active",
+      "type": "perpetual",
+      "effective_from": "2025-01-01",
+      "effective_to": null,
+      "tags": [
+        "australia",
+        "acl",
+        "consumer-law",
+        "returns",
+        "warranty"
+      ],
+      "path": "live/perpetual/merchandise/REF-MERCH-AU-001_consumer-law.md"
+    },
+    {
+      "policy_id": "REF-MERCH-EU-001",
+      "title": "EU consumer law overlay for merchandise",
+      "status": "active",
+      "type": "perpetual",
+      "effective_from": "2025-01-01",
+      "effective_to": null,
+      "tags": [
+        "eu",
+        "consumer-law",
+        "cooling-off",
+        "returns",
+        "warranty"
+      ],
+      "path": "live/perpetual/merchandise/REF-MERCH-EU-001_consumer-law.md"
     },
     {
       "policy_id": "TEMP-2026-01-EXAMPLE",

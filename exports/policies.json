@@ -1,18 +1,18 @@
 {
   "version": 1,
-  "generated_at": "2026-01-13T04:33:35.990Z",
+  "generated_at": "2026-01-13T04:56:19.819Z",
   "source": "live",
   "policies": [
     {
-      "policy_id": "REF-001",
-      "title": "Refund eligibility for PBT services",
+      "policy_id": "REF-MERCH-001",
+      "title": "Returns, refunds, and exchanges for merchandise",
       "status": "active",
       "type": "perpetual",
       "domain": "merchandise",
       "category_path": "live/perpetual/merchandise",
       "effective_from": "2025-01-01",
       "effective_to": null,
-      "priority": 2,
+      "priority": 50,
       "owner_team": "Policy Ops",
       "approvers": [
         "Head of Support"
@@ -24,21 +24,144 @@
         "Support agents"
       ],
       "tags": [
+        "returns",
         "refunds",
-        "support"
+        "exchanges",
+        "warranty",
+        "merchandise"
       ],
-      "path": "live/perpetual/merchandise/REF-001_refunds.md",
+      "path": "live/perpetual/merchandise/REF-MERCH-001_returns-and-refunds.md",
       "sections": {
-        "Summary": "We allow refunds for clear billing errors or service outages within the last 30 days.",
-        "When it applies": "Use this policy when a customer requests a refund for PBT services.",
-        "Rules": "- Refunds require evidence of a billing mistake or documented outage.\n- Partial refunds are preferred when only part of the service was impacted.\n- Refunds beyond 30 days need escalation approval.",
-        "Allowed actions": "- Approve full refunds for billing errors within 30 days.\n- Approve partial refunds for limited outages within 30 days.",
-        "Disallowed actions": "- Grant refunds without documented evidence.\n- Approve refunds beyond 30 days without escalation.",
-        "Required wording": "\"I can help with a refund for a verified billing issue or outage within the last 30 days.\"",
-        "Escalation": "Escalate to the Support Lead for exceptions or refunds beyond 30 days.",
-        "Examples": "A customer was double-charged last week. Approve a full refund for the duplicate charge."
+        "Summary": "Defines how PBT handles returns, refunds, exchanges, and faulty merchandise worldwide, subject to regional consumer laws.",
+        "When it applies": "All PBT Store merchandise purchases; regional overlays take precedence where they apply.",
+        "Rules": "- Change of mind: within 30 days; unused; original condition; tags and packaging intact.\n- Faulty items: 12-month warranty for manufacturing defects; major fault means refund or replacement; minor fault means repair or replacement.\n- Proof of purchase required (order email, receipt, or bank record).\n- Customer must contact support before returning; photos for faults when possible.\n- Return shipping: change-of-mind customer pays; faulty items PBT pays return and replacement shipping.\n- Refund timing: refunds to original method within 5 business days after receiving the return; store credit may be faster.",
+        "Allowed actions": "- Provide refunds, exchanges, or store credit within policy limits.\n- Request photos or other evidence of a fault.\n- Offer goodwill solutions within approval limits.",
+        "Disallowed actions": "- Refuse legitimate warranty claims.\n- Issue refunds without proof of purchase.\n- Override consumer law rights.",
+        "Required wording": "\"We're happy to help with a return or refund in line with our policy and your local consumer rights.\"",
+        "Escalation": "Legal disputes, unclear fault classification, or high-value orders.",
+        "Examples": "- A customer changes their mind within 30 days and the item is unused with tags intact; the return is eligible.\n- A manufacturing defect appears after 6 months; the warranty applies and a remedy is required."
       },
-      "raw_markdown": "---\npolicy_id: REF-001\ntitle: \"Refund eligibility for PBT services\"\nstatus: active\ntype: perpetual\ndomain: merchandise\neffective_from: 2025-01-01\neffective_to:\npriority: 2\nowner_team: \"Policy Ops\"\napprovers:\n  - \"Head of Support\"\njurisdiction:\n  - \"Global\"\napplies_to:\n  - \"Support agents\"\ntags:\n  - \"refunds\"\n  - \"support\"\n---\n\n# Summary\nWe allow refunds for clear billing errors or service outages within the last 30 days.\n\n# When it applies\nUse this policy when a customer requests a refund for PBT services.\n\n# Rules\n- Refunds require evidence of a billing mistake or documented outage.\n- Partial refunds are preferred when only part of the service was impacted.\n- Refunds beyond 30 days need escalation approval.\n\n# Allowed actions\n- Approve full refunds for billing errors within 30 days.\n- Approve partial refunds for limited outages within 30 days.\n\n# Disallowed actions\n- Grant refunds without documented evidence.\n- Approve refunds beyond 30 days without escalation.\n\n# Required wording\n\"I can help with a refund for a verified billing issue or outage within the last 30 days.\"\n\n# Escalation\nEscalate to the Support Lead for exceptions or refunds beyond 30 days.\n\n# Examples\nA customer was double-charged last week. Approve a full refund for the duplicate charge.\n"
+      "raw_markdown": "---\npolicy_id: REF-MERCH-001\ntitle: \"Returns, refunds, and exchanges for merchandise\"\nstatus: active\ntype: perpetual\ndomain: merchandise\neffective_from: 2025-01-01\neffective_to:\npriority: 50\nowner_team: \"Policy Ops\"\napprovers:\n  - \"Head of Support\"\njurisdiction:\n  - \"Global\"\napplies_to:\n  - \"Support agents\"\ntags:\n  - \"returns\"\n  - \"refunds\"\n  - \"exchanges\"\n  - \"warranty\"\n  - \"merchandise\"\n---\n\n# Summary\nDefines how PBT handles returns, refunds, exchanges, and faulty merchandise worldwide, subject to regional consumer laws.\n\n# When it applies\nAll PBT Store merchandise purchases; regional overlays take precedence where they apply.\n\n# Rules\n- Change of mind: within 30 days; unused; original condition; tags and packaging intact.\n- Faulty items: 12-month warranty for manufacturing defects; major fault means refund or replacement; minor fault means repair or replacement.\n- Proof of purchase required (order email, receipt, or bank record).\n- Customer must contact support before returning; photos for faults when possible.\n- Return shipping: change-of-mind customer pays; faulty items PBT pays return and replacement shipping.\n- Refund timing: refunds to original method within 5 business days after receiving the return; store credit may be faster.\n\n# Allowed actions\n- Provide refunds, exchanges, or store credit within policy limits.\n- Request photos or other evidence of a fault.\n- Offer goodwill solutions within approval limits.\n\n# Disallowed actions\n- Refuse legitimate warranty claims.\n- Issue refunds without proof of purchase.\n- Override consumer law rights.\n\n# Required wording\n\"We're happy to help with a return or refund in line with our policy and your local consumer rights.\"\n\n# Escalation\nLegal disputes, unclear fault classification, or high-value orders.\n\n# Examples\n- A customer changes their mind within 30 days and the item is unused with tags intact; the return is eligible.\n- A manufacturing defect appears after 6 months; the warranty applies and a remedy is required.\n"
+    },
+    {
+      "policy_id": "REF-MERCH-002",
+      "title": "Shipping and delivery for merchandise",
+      "status": "active",
+      "type": "perpetual",
+      "domain": "merchandise",
+      "category_path": "live/perpetual/merchandise",
+      "effective_from": "2025-01-01",
+      "effective_to": null,
+      "priority": 40,
+      "owner_team": "Policy Ops",
+      "approvers": [
+        "Head of Support"
+      ],
+      "jurisdiction": [
+        "Global"
+      ],
+      "applies_to": [
+        "Support agents"
+      ],
+      "tags": [
+        "shipping",
+        "delivery",
+        "tracking",
+        "duties",
+        "taxes"
+      ],
+      "path": "live/perpetual/merchandise/REF-MERCH-002_shipping-and-delivery.md",
+      "sections": {
+        "Summary": "Shipping coverage, delivery estimates, carriers, duties, and tracking for merchandise orders.",
+        "When it applies": "All merchandise orders.",
+        "Rules": "- Rates are calculated at checkout; free shipping may apply if a threshold is met.\n- Delivery times are estimates only; they are not guaranteed.\n- Carriers vary by region (AusPost, DHL, UPS, FedEx, USPS, or local equivalents).\n- Tracking is provided on dispatch; delays do not always mean a parcel is lost.\n- Duties and taxes are the customer's responsibility unless DDP is selected at checkout.\n- Lost or delayed: if the carrier confirms loss, offer a replacement or refund; delays alone do not qualify for an automatic refund.",
+        "Allowed actions": "- Help customers track shipments and interpret tracking updates.\n- Open carrier investigations when deliveries appear delayed or missing.",
+        "Disallowed actions": "- Guarantee delivery dates or transit times.\n- Cover duties or taxes unless explicitly authorized.",
+        "Required wording": "\"Delivery times are estimates provided by carriers and may vary depending on location and customs processing.\"",
+        "Escalation": "Confirmed loss cases or systemic carrier delays.",
+        "Examples": "- A parcel is held by customs; advise the customer about estimated delays and duties.\n- The carrier confirms a shipment is lost; offer a replacement or refund."
+      },
+      "raw_markdown": "---\npolicy_id: REF-MERCH-002\ntitle: \"Shipping and delivery for merchandise\"\nstatus: active\ntype: perpetual\ndomain: merchandise\neffective_from: 2025-01-01\neffective_to:\npriority: 40\nowner_team: \"Policy Ops\"\napprovers:\n  - \"Head of Support\"\njurisdiction:\n  - \"Global\"\napplies_to:\n  - \"Support agents\"\ntags:\n  - \"shipping\"\n  - \"delivery\"\n  - \"tracking\"\n  - \"duties\"\n  - \"taxes\"\n---\n\n# Summary\nShipping coverage, delivery estimates, carriers, duties, and tracking for merchandise orders.\n\n# When it applies\nAll merchandise orders.\n\n# Rules\n- Rates are calculated at checkout; free shipping may apply if a threshold is met.\n- Delivery times are estimates only; they are not guaranteed.\n- Carriers vary by region (AusPost, DHL, UPS, FedEx, USPS, or local equivalents).\n- Tracking is provided on dispatch; delays do not always mean a parcel is lost.\n- Duties and taxes are the customer's responsibility unless DDP is selected at checkout.\n- Lost or delayed: if the carrier confirms loss, offer a replacement or refund; delays alone do not qualify for an automatic refund.\n\n# Allowed actions\n- Help customers track shipments and interpret tracking updates.\n- Open carrier investigations when deliveries appear delayed or missing.\n\n# Disallowed actions\n- Guarantee delivery dates or transit times.\n- Cover duties or taxes unless explicitly authorized.\n\n# Required wording\n\"Delivery times are estimates provided by carriers and may vary depending on location and customs processing.\"\n\n# Escalation\nConfirmed loss cases or systemic carrier delays.\n\n# Examples\n- A parcel is held by customs; advise the customer about estimated delays and duties.\n- The carrier confirms a shipment is lost; offer a replacement or refund.\n"
+    },
+    {
+      "policy_id": "REF-MERCH-AU-001",
+      "title": "Australian Consumer Law overlay for merchandise",
+      "status": "active",
+      "type": "perpetual",
+      "domain": "merchandise",
+      "category_path": "live/perpetual/merchandise",
+      "effective_from": "2025-01-01",
+      "effective_to": null,
+      "priority": 90,
+      "owner_team": "Policy Ops",
+      "approvers": [
+        "Head of Support"
+      ],
+      "jurisdiction": [
+        "Australia"
+      ],
+      "applies_to": [
+        "Support agents"
+      ],
+      "tags": [
+        "australia",
+        "acl",
+        "consumer-law",
+        "returns",
+        "warranty"
+      ],
+      "path": "live/perpetual/merchandise/REF-MERCH-AU-001_consumer-law.md",
+      "sections": {
+        "Summary": "Australian Consumer Law (ACL) overrides store policy where applicable.",
+        "When it applies": "The shipping or billing address is in Australia.",
+        "Rules": "- Goods must be of acceptable quality, fit for purpose, and as described.\n- Remedies apply regardless of store warranty periods.\n- Major fault: the customer chooses a refund or replacement.\n- Minor fault: PBT may choose repair or replacement.\n- Change of mind: ACL does not require refunds; the store policy may allow them at discretion.\n- Overrides: base warranty limits do not restrict ACL rights.",
+        "Allowed actions": "- Provide a refund or replacement for major faults at the customer's choice.\n- Choose repair or replacement for minor faults.\n- Apply the change-of-mind policy when it is offered as a courtesy.",
+        "Disallowed actions": "- Deny ACL remedies due to store warranty periods or policy limits.\n- State that change-of-mind refunds are required under ACL.",
+        "Required wording": "\"Under Australian Consumer Law, you're entitled to a remedy if a product has a major fault.\"",
+        "Escalation": "Customer cites ACL, or the dispute involves high-value orders.",
+        "Examples": "- A product fails due to a major defect; the customer chooses a refund under ACL.\n- A customer requests a change-of-mind return; clarify that ACL does not require it and apply store policy if eligible."
+      },
+      "raw_markdown": "---\npolicy_id: REF-MERCH-AU-001\ntitle: \"Australian Consumer Law overlay for merchandise\"\nstatus: active\ntype: perpetual\ndomain: merchandise\neffective_from: 2025-01-01\neffective_to:\npriority: 90\nowner_team: \"Policy Ops\"\napprovers:\n  - \"Head of Support\"\njurisdiction:\n  - \"Australia\"\napplies_to:\n  - \"Support agents\"\ntags:\n  - \"australia\"\n  - \"acl\"\n  - \"consumer-law\"\n  - \"returns\"\n  - \"warranty\"\n---\n\n# Summary\nAustralian Consumer Law (ACL) overrides store policy where applicable.\n\n# When it applies\nThe shipping or billing address is in Australia.\n\n# Rules\n- Goods must be of acceptable quality, fit for purpose, and as described.\n- Remedies apply regardless of store warranty periods.\n- Major fault: the customer chooses a refund or replacement.\n- Minor fault: PBT may choose repair or replacement.\n- Change of mind: ACL does not require refunds; the store policy may allow them at discretion.\n- Overrides: base warranty limits do not restrict ACL rights.\n\n# Allowed actions\n- Provide a refund or replacement for major faults at the customer's choice.\n- Choose repair or replacement for minor faults.\n- Apply the change-of-mind policy when it is offered as a courtesy.\n\n# Disallowed actions\n- Deny ACL remedies due to store warranty periods or policy limits.\n- State that change-of-mind refunds are required under ACL.\n\n# Required wording\n\"Under Australian Consumer Law, you're entitled to a remedy if a product has a major fault.\"\n\n# Escalation\nCustomer cites ACL, or the dispute involves high-value orders.\n\n# Examples\n- A product fails due to a major defect; the customer chooses a refund under ACL.\n- A customer requests a change-of-mind return; clarify that ACL does not require it and apply store policy if eligible.\n"
+    },
+    {
+      "policy_id": "REF-MERCH-EU-001",
+      "title": "EU consumer law overlay for merchandise",
+      "status": "active",
+      "type": "perpetual",
+      "domain": "merchandise",
+      "category_path": "live/perpetual/merchandise",
+      "effective_from": "2025-01-01",
+      "effective_to": null,
+      "priority": 90,
+      "owner_team": "Policy Ops",
+      "approvers": [
+        "Head of Support"
+      ],
+      "jurisdiction": [
+        "European Union"
+      ],
+      "applies_to": [
+        "Support agents"
+      ],
+      "tags": [
+        "eu",
+        "consumer-law",
+        "cooling-off",
+        "returns",
+        "warranty"
+      ],
+      "path": "live/perpetual/merchandise/REF-MERCH-EU-001_consumer-law.md",
+      "sections": {
+        "Summary": "EU statutory consumer rights override store return policies where applicable.",
+        "When it applies": "The shipping or billing address is in the European Union.",
+        "Rules": "- Customers have a 14-day cooling-off period from receiving goods.\n- Refunds include the product price and standard outbound shipping, and must be processed within 14 days of the return notice.\n- Faulty goods carry a minimum 2-year guarantee.\n- Overrides: store limits do not restrict statutory rights.",
+        "Allowed actions": "- Approve cooling-off returns within 14 days of delivery.\n- Issue refunds that include standard outbound shipping when applicable.\n- Provide remedies for faulty goods within the minimum 2-year guarantee.",
+        "Disallowed actions": "- Deny a valid cooling-off request made within 14 days.\n- Exclude standard outbound shipping from a statutory refund.\n- Reduce remedies below the 2-year guarantee for faulty goods.",
+        "Required wording": "\"Under EU consumer law, you're entitled to a 14-day cooling-off period for online purchases.\"",
+        "Escalation": "Rights disputes or unclear eligibility.",
+        "Examples": "- A customer notifies support within 14 days of delivery; process the cooling-off return.\n- A defect appears after 18 months; the statutory guarantee still applies."
+      },
+      "raw_markdown": "---\npolicy_id: REF-MERCH-EU-001\ntitle: \"EU consumer law overlay for merchandise\"\nstatus: active\ntype: perpetual\ndomain: merchandise\neffective_from: 2025-01-01\neffective_to:\npriority: 90\nowner_team: \"Policy Ops\"\napprovers:\n  - \"Head of Support\"\njurisdiction:\n  - \"European Union\"\napplies_to:\n  - \"Support agents\"\ntags:\n  - \"eu\"\n  - \"consumer-law\"\n  - \"cooling-off\"\n  - \"returns\"\n  - \"warranty\"\n---\n\n# Summary\nEU statutory consumer rights override store return policies where applicable.\n\n# When it applies\nThe shipping or billing address is in the European Union.\n\n# Rules\n- Customers have a 14-day cooling-off period from receiving goods.\n- Refunds include the product price and standard outbound shipping, and must be processed within 14 days of the return notice.\n- Faulty goods carry a minimum 2-year guarantee.\n- Overrides: store limits do not restrict statutory rights.\n\n# Allowed actions\n- Approve cooling-off returns within 14 days of delivery.\n- Issue refunds that include standard outbound shipping when applicable.\n- Provide remedies for faulty goods within the minimum 2-year guarantee.\n\n# Disallowed actions\n- Deny a valid cooling-off request made within 14 days.\n- Exclude standard outbound shipping from a statutory refund.\n- Reduce remedies below the 2-year guarantee for faulty goods.\n\n# Required wording\n\"Under EU consumer law, you're entitled to a 14-day cooling-off period for online purchases.\"\n\n# Escalation\nRights disputes or unclear eligibility.\n\n# Examples\n- A customer notifies support within 14 days of delivery; process the cooling-off return.\n- A defect appears after 18 months; the statutory guarantee still applies.\n"
     },
     {
       "policy_id": "TEMP-2026-01-EXAMPLE",
