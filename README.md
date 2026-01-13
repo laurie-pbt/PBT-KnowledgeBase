@@ -65,7 +65,7 @@ This generates:
 - `exports/policies-draft.json` (all draft policies for app testing)
 - `exports/index.json` (minimal metadata index)
 
-## GitHub Pages exports
+## Published Exports
 
 JSON exports are published to GitHub Pages on each push to `main`:
 
