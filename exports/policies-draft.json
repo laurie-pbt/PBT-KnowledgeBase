@@ -1,6 +1,6 @@
 {
-  "version": 1,
-  "generated_at": "2026-01-13T05:10:21.813Z",
+  "version": 2,
+  "generated_at": "2026-03-02T01:36:38.351Z",
   "source": "draft",
   "policies": [
     {
@@ -9,6 +9,7 @@
       "status": "draft",
       "type": "perpetual",
       "domain": "merchandise",
+      "visibility": null,
       "category_path": "draft/in-progress/merchandise",
       "effective_from": null,
       "effective_to": null,
@@ -28,16 +29,48 @@
         "draft"
       ],
       "path": "draft/in-progress/merchandise/REF-NEW_refunds-rewrite.md",
-      "sections": {
-        "Summary": "Draft rewrite of the refund policy for review.",
-        "When it applies": "Use during internal policy review and testing.",
-        "Rules": "- Draft content only; do not apply to customers.",
-        "Allowed actions": "- Review and provide feedback on proposed language.",
-        "Disallowed actions": "- Enforce this draft policy in production.",
-        "Required wording": "\"This is a draft policy under review and not yet effective.\"",
-        "Escalation": "Escalate questions to Policy Ops.",
-        "Examples": "A reviewer flags missing edge cases and requests clarification."
-      },
+      "sections": [
+        {
+          "section_id": "1b93bc17e3dbe78e8a80fee5e7a495876253fd1f27b96655b0d7308e5398975b",
+          "heading": "Summary",
+          "content": "Draft rewrite of the refund policy for review."
+        },
+        {
+          "section_id": "a7db729d442ff31be6d21f22ce1001ce455ef096f582d0db0b06408ca637c751",
+          "heading": "When it applies",
+          "content": "Use during internal policy review and testing."
+        },
+        {
+          "section_id": "fa4f173a8e1b4255fffad4b7c557f8600087a6e4c76c0e182639f412c550f201",
+          "heading": "Rules",
+          "content": "- Draft content only; do not apply to customers."
+        },
+        {
+          "section_id": "925eb61e102deaa8f25d434602048b869c15dad976cf6772ecb18b99a8ad9474",
+          "heading": "Allowed actions",
+          "content": "- Review and provide feedback on proposed language."
+        },
+        {
+          "section_id": "46192fe965466ce757e6a747b977026fa2175176eff9a608fe47a12368545232",
+          "heading": "Disallowed actions",
+          "content": "- Enforce this draft policy in production."
+        },
+        {
+          "section_id": "973e73cf3d3d6a333d5a939d2b7d60775214e902d3f986d7396124c83b9a1d5a",
+          "heading": "Required wording",
+          "content": "\"This is a draft policy under review and not yet effective.\""
+        },
+        {
+          "section_id": "8da9747f11c62fdce0e47b680e84248c78067b3a5903ea089a4e4ef952168d5c",
+          "heading": "Escalation",
+          "content": "Escalate questions to Policy Ops."
+        },
+        {
+          "section_id": "8a2b582d4697a9ba679572499e1f9a7171b78e43400082add217ce3a7cfda544",
+          "heading": "Examples",
+          "content": "A reviewer flags missing edge cases and requests clarification."
+        }
+      ],
       "raw_markdown": "---\npolicy_id: REF-NEW\ntitle: \"Refund policy rewrite (draft)\"\nstatus: draft\ntype: perpetual\ndomain: merchandise\neffective_from:\neffective_to:\npriority: 3\nowner_team: \"Policy Ops\"\napprovers:\n  - \"Head of Support\"\njurisdiction:\n  - \"Global\"\napplies_to:\n  - \"Support agents\"\ntags:\n  - \"refunds\"\n  - \"draft\"\n---\n\n# Summary\nDraft rewrite of the refund policy for review.\n\n# When it applies\nUse during internal policy review and testing.\n\n# Rules\n- Draft content only; do not apply to customers.\n\n# Allowed actions\n- Review and provide feedback on proposed language.\n\n# Disallowed actions\n- Enforce this draft policy in production.\n\n# Required wording\n\"This is a draft policy under review and not yet effective.\"\n\n# Escalation\nEscalate questions to Policy Ops.\n\n# Examples\nA reviewer flags missing edge cases and requests clarification.\n"
     }
   ]

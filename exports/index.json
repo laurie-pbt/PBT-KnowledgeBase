@@ -1,6 +1,6 @@
 {
-  "version": 1,
-  "generated_at": "2026-01-13T05:10:21.811Z",
+  "version": 2,
+  "generated_at": "2026-03-02T01:36:38.350Z",
   "policies": [
     {
       "policy_id": "REF-MERCH-001",
@@ -9,6 +9,17 @@
       "type": "perpetual",
       "effective_from": "2025-01-01",
       "effective_to": null,
+      "visibility": "public",
+      "section_ids": [
+        "1fee2e5044c94f9bdc154030026fba9db68c2b95dfc2b01340aaa6a1a004506b",
+        "70f71454c94f3b034f16e58660abe232c3742bcedae2ff99d6435cbeb9f946d9",
+        "f8c27989ab29b54242a3d67f23266a1182768e0dd9acf7320391f70d4fd3c9ce",
+        "83e9888a468dbc8108cb5edbf172fa44bd3a9dd0c2d0f17f959350a51e27e93d",
+        "603261fa2d9209f313dfb745fe14fb0db6ffd102a02448e2e297e0c94dd57278",
+        "fdcf9e4ec7d315fd31942aaf3d6fb850c5009e4abb26c461fa084d04c7a26c9d",
+        "21ce02b275b6ed580316ee3f56c3d41ee6f9347c2d423780aedd762ea3bea613",
+        "6959f405d3ade102b2d2fb0c6e08528569bc3b2297a0907615d6482da9b3d12a"
+      ],
       "tags": [
         "returns",
         "refunds",
@@ -25,6 +36,17 @@
       "type": "perpetual",
       "effective_from": "2025-01-01",
       "effective_to": null,
+      "visibility": "public",
+      "section_ids": [
+        "879bb1fe0a10609d611c494a5cf3475f26fac5e0df4c96fcf056df2d00b42668",
+        "9d3025605241dcea1ffc2ed09d6ba12a7ac14152137904745ef659d0fd9e99d7",
+        "3cbbf986469d9e92e541c96b54621bf777efa35ea935587397f77b8faedacbe2",
+        "1ea365300457e88fa9d4a783c47d20834eafb2b4ac17a5cf1d3a81fcf36d8e38",
+        "0e093e9fe70c592c746ede493abea50242603875c20f5ee7e1ff45432e3c031b",
+        "aff1c73b70baab37d353c5201023edc3b052cb5d899c06f60321682b9de65402",
+        "fac8233f65a1090fb191361cdca6e01a5c1737f3b8775894909e1f9c4ef045b1",
+        "12eca42f8a6f2c7efb83262ca9f1688ded014a7be4fdb917c0f12c9dd74b897c"
+      ],
       "tags": [
         "shipping",
         "delivery",
@@ -41,6 +63,17 @@
       "type": "perpetual",
       "effective_from": "2025-01-01",
       "effective_to": null,
+      "visibility": "public",
+      "section_ids": [
+        "21e21ff27341d05ba1199eb67b1c6ec7de9fd4f985a158a502565a9d438bcd4c",
+        "2398e4ab90d1618424d4cef74500bcbd8058d44a916fd33d6720e71b0c5c25c5",
+        "83b6d409fb917a8832ee62e2e092d455387e5191149676d206abb4419b5c42c8",
+        "6153fc2b41ff23be37c1d48d538c1c36ac61b9677fca3cdadcdfaa36033f731a",
+        "6bb3e42f3490edaff07bddb1ea96ec8f00628cb0bb240fb3efee7e00b6f0203d",
+        "045f68c98a5417a258bfc9b6bb4d360c335cdf91acc36accb31a40264ae0ba1c",
+        "d613d5c662af3aab3470f36abcf9c7fce78adc96c1ea7aab0b299dd8750a88c1",
+        "379c099b37b4bf39582ff017f40fd1134fa5f670e634652fba26006f0fd0cb2a"
+      ],
       "tags": [
         "australia",
         "acl",
@@ -57,6 +90,17 @@
       "type": "perpetual",
       "effective_from": "2025-01-01",
       "effective_to": null,
+      "visibility": "public",
+      "section_ids": [
+        "7daf941e2a2366271cc7876dc2d2446d65d03a1d6f386868dba5363e0d539540",
+        "7edf30a5ff92ab794b618bbcfefb0cfaa9c61b9332539b6c83b12567225d4cd4",
+        "45e570fccd6b40dca4af4173cc1ed1712a52f823307fd8a9e8e484a24c0b5dba",
+        "1c7ee3b5564f65c71ae638948c5ec0277f4481a1a53f75ffd7ea561269fa4cc8",
+        "2240c04dffa0183e68ab207a921a3a9a1ce7da193c0a916249fcbadc299ebfaa",
+        "dd46df3bf025aef36010c2e814ae68e29e8a713450dc59eb68c69314459250ea",
+        "b82890e9212f168ea0716da1143900e115ead65d5d5933aae2f5d30c5e25f1e7",
+        "8a9c22e2b168ac38ccfbb2c81d40e21f0afb1cf71cb5418506ad0f079baa99e5"
+      ],
       "tags": [
         "eu",
         "consumer-law",
@@ -65,19 +109,6 @@
         "warranty"
       ],
       "path": "live/perpetual/merchandise/REF-MERCH-EU-001_consumer-law.md"
-    },
-    {
-      "policy_id": "TEMP-2026-01-EXAMPLE",
-      "title": "Temporary waiver for holiday surge response",
-      "status": "active",
-      "type": "temporary",
-      "effective_from": "2026-01-10",
-      "effective_to": "2026-02-15",
-      "tags": [
-        "temporary",
-        "surge"
-      ],
-      "path": "live/temporary/merchandise/TEMP-2026-01_example.md"
     }
   ]
 }
