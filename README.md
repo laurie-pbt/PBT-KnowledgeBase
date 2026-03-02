@@ -89,6 +89,13 @@ This generates:
 
 Export schema version is now `v2` (`"version": 2`) because policy `sections` changed from a key/value map to an array of section objects and each section now includes stable `section_id`.
 
+### Exports v1 → v2 migration
+
+- `sections` changed from a heading->content map to an ordered array of section objects.
+- `section_id` is stable and should be used for citations.
+- `visibility` is enforced; customer retrieval scope is `live` + `visibility: public` only.
+- `draft/**` remains non-authoritative and must never be exposed to customers.
+
 ## Published Exports
 
 JSON exports are published to GitHub Pages on each push to `main`:
