@@ -36,6 +36,14 @@ scripts/
 - `scripts/`: Build utilities.
 - `domain`: Department identifier (`merchandise`, `workshops`, `online-training`) that must match the folder path.
 
+## Draft vs live visibility
+
+- `draft/**`: Work-in-progress policies for internal iteration and testing.
+- `live/**`: Final policies used for production exports and date-based activation.
+- Live policies must include frontmatter `visibility` with one of: `public`, `internal`.
+- Draft policies may include `visibility`; when omitted, `exports/policies-draft.json` records it as `null`.
+- Customer chatbot rule: use only policies that are `live` and `visibility: public`.
+
 ## Create a policy
 
 1. Copy the relevant template from `templates/`.
@@ -45,9 +53,23 @@ scripts/
 
 ## Promote draft -> live
 
-1. Move the markdown file from `draft/**` to the matching department folder under `live/perpetual/` or `live/temporary/`.
-2. Update `status` to `active`, confirm `domain` matches the folder, and confirm `effective_from`/`effective_to` dates.
-3. Re-run `npm run build:exports` and review `exports/` outputs.
+Use the manager-only publish CLI so required live metadata is enforced:
+
+```bash
+npm run publish:policy -- --manager <draft-path-or-policy_id> [--visibility public|internal] [--effective-from YYYY-MM-DD] [--effective-to YYYY-MM-DD] [--copy]
+```
+
+- Input can be a draft markdown path (for example `draft/in-progress/merchandise/REF-NEW_refunds-rewrite.md`) or a `policy_id`.
+- The command validates required live frontmatter (`policy_id`, `title`, `priority`, `owner_team`, `approvers`, `jurisdiction`, `applies_to`, `tags`, `effective_from`, `visibility`).
+- `effective_to` controls destination: set => `live/temporary/**`, unset => `live/perpetual/**`.
+- `policy_id` stays unchanged and must be unique across `live/**`.
+- `build:exports` is run automatically; if it fails, the publish operation is rolled back.
+
+Expected git workflow:
+1. Create/update policy in `draft/**` on a feature branch.
+2. Run `npm run publish:policy -- --manager ...`.
+3. Review moved/copied file plus regenerated `exports/*.json`.
+4. Run `npm run check:exports` and open a PR for review/approval.
 
 ## Temporary policy expiry
 
@@ -63,7 +85,9 @@ npm run build:exports
 This generates:
 - `exports/policies.json` (active live policies only; the only export agents read)
 - `exports/policies-draft.json` (all draft policies for app testing)
-- `exports/index.json` (minimal metadata index)
+- `exports/index.json` (minimal metadata index, including visibility)
+
+Export schema version is now `v2` (`"version": 2`) because policy `sections` changed from a key/value map to an array of section objects and each section now includes stable `section_id`.
 
 ## Published Exports
 

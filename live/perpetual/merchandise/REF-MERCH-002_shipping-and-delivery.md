@@ -4,6 +4,7 @@ title: "Shipping and delivery for merchandise"
 status: active
 type: perpetual
 domain: merchandise
+visibility: public
 effective_from: 2025-01-01
 effective_to:
 priority: 40

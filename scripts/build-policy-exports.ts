@@ -1,5 +1,6 @@
 import path from "path";
 import fs from "fs/promises";
+import crypto from "crypto";
 import matter from "gray-matter";
 import fg from "fast-glob";
 
@@ -15,11 +16,19 @@ const BASE_REQUIRED_FIELDS = [
 ] as const;
 
 const VALID_DOMAINS = ["merchandise", "workshops", "online-training"] as const;
+const VALID_VISIBILITY = ["public", "internal"] as const;
 
 type BaseRequiredField = (typeof BASE_REQUIRED_FIELDS)[number];
 type Domain = (typeof VALID_DOMAINS)[number];
+type Visibility = (typeof VALID_VISIBILITY)[number];
 type LivePolicyType = "perpetual" | "temporary";
 type PolicyRoot = "live" | "draft";
+
+type PolicySection = {
+  section_id: string;
+  heading: string;
+  content: string;
+};
 
 type PolicyRecord = {
   policy_id: unknown;
@@ -27,6 +36,7 @@ type PolicyRecord = {
   status: unknown;
   type: unknown;
   domain: Domain;
+  visibility: string | null;
   category_path: string;
   effective_from: string | null;
   effective_to: string | null;
@@ -37,19 +47,19 @@ type PolicyRecord = {
   applies_to: unknown;
   tags: unknown;
   path: string;
-  sections: Record<string, string>;
+  sections: PolicySection[];
   raw_markdown: string;
 };
 
 type ExportPayload = {
-  version: 1;
+  version: 2;
   generated_at: string;
   source: "live" | "draft";
   policies: PolicyRecord[];
 };
 
 type IndexPayload = {
-  version: 1;
+  version: 2;
   generated_at: string;
   policies: Array<{
     policy_id: unknown;
@@ -58,6 +68,8 @@ type IndexPayload = {
     type: unknown;
     effective_from: string | null;
     effective_to: string | null;
+    visibility: string | null;
+    section_ids: string[];
     tags: unknown;
     path: string;
   }>;
@@ -210,6 +222,29 @@ function resolveDomain(
   return context.domainFromPath;
 }
 
+function resolveVisibility(
+  data: Record<string, unknown>,
+  context: PathContext,
+  filePath: string
+): string | null {
+  const rawVisibility = normalizeString(data.visibility);
+
+  if (context.root === "live") {
+    if (!rawVisibility) {
+      throw new Error(`Missing frontmatter field 'visibility' in ${filePath}.`);
+    }
+    if (!VALID_VISIBILITY.includes(rawVisibility as Visibility)) {
+      throw new Error(
+        `Invalid frontmatter field 'visibility' in ${filePath}: '${rawVisibility}'. Expected one of ${VALID_VISIBILITY.join(
+          ", "
+        )}.`
+      );
+    }
+  }
+
+  return rawVisibility;
+}
+
 function parseIsoDate(
   value: unknown,
   fieldName: string,
@@ -292,9 +327,21 @@ function resolveEffectiveDates(
   };
 }
 
-function extractSections(markdown: string): Record<string, string> {
+function normalizeHeadingText(heading: string): string {
+  return heading.trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+function buildSectionId(policyId: string, heading: string): string {
+  const normalizedHeading = normalizeHeadingText(heading);
+  return crypto
+    .createHash("sha256")
+    .update(`${policyId}||${normalizedHeading}`)
+    .digest("hex");
+}
+
+function extractSections(markdown: string, policyId: string): PolicySection[] {
   const lines = markdown.split(/\r?\n/);
-  const sections: Record<string, string> = {};
+  const sectionsByHeading: Record<string, string> = {};
   let currentHeading: string | null = null;
   let buffer: string[] = [];
   let inCodeBlock = false;
@@ -305,15 +352,15 @@ function extractSections(markdown: string): Record<string, string> {
     }
 
     const content = buffer.join("\n").trim();
-    if (Object.prototype.hasOwnProperty.call(sections, currentHeading)) {
+    if (Object.prototype.hasOwnProperty.call(sectionsByHeading, currentHeading)) {
       if (content) {
-        sections[currentHeading] = [sections[currentHeading], content]
+        sectionsByHeading[currentHeading] = [sectionsByHeading[currentHeading], content]
           .filter(Boolean)
           .join("\n\n")
           .trim();
       }
     } else {
-      sections[currentHeading] = content;
+      sectionsByHeading[currentHeading] = content;
     }
   };
 
@@ -342,7 +389,11 @@ function extractSections(markdown: string): Record<string, string> {
   }
 
   flush();
-  return sections;
+  return Object.entries(sectionsByHeading).map(([heading, content]) => ({
+    section_id: buildSectionId(policyId, heading),
+    heading,
+    content,
+  }));
 }
 
 function buildPolicyRecord(
@@ -353,12 +404,14 @@ function buildPolicyRecord(
   resolvedStatus: string,
   resolvedType: string,
   resolvedDomain: Domain,
+  resolvedVisibility: string | null,
   categoryPath: string,
   effectiveFrom: string | null,
   effectiveTo: string | null
 ): PolicyRecord {
   const relativePath = normalizePath(path.relative(process.cwd(), filePath));
-  const sections = extractSections(content);
+  const policyId = String(data.policy_id ?? "");
+  const sections = extractSections(content, policyId);
 
   return {
     policy_id: data.policy_id,
@@ -366,6 +419,7 @@ function buildPolicyRecord(
     status: resolvedStatus,
     type: resolvedType,
     domain: resolvedDomain,
+    visibility: resolvedVisibility,
     category_path: categoryPath,
     effective_from: effectiveFrom,
     effective_to: effectiveTo,
@@ -409,6 +463,7 @@ async function loadPolicies(
     const resolvedStatus = resolveStatus(data, context);
     const resolvedType = resolveType(data, context, relativePath);
     const resolvedDomain = resolveDomain(data, context, relativePath);
+    const resolvedVisibility = resolveVisibility(data, context, relativePath);
     const {
       effectiveFromDate,
       effectiveToDate,
@@ -433,6 +488,7 @@ async function loadPolicies(
         resolvedStatus,
         resolvedType,
         resolvedDomain,
+        resolvedVisibility,
         context.categoryPath,
         effectiveFrom,
         effectiveTo
@@ -441,7 +497,7 @@ async function loadPolicies(
   }
 
   return {
-    version: 1,
+    version: 2,
     generated_at: new Date().toISOString(),
     source,
     policies,
@@ -455,7 +511,7 @@ async function writeJson(filePath: string, payload: unknown): Promise<void> {
 
 async function buildIndex(livePayload: ExportPayload): Promise<IndexPayload> {
   return {
-    version: 1,
+    version: 2,
     generated_at: livePayload.generated_at,
     policies: livePayload.policies.map((policy) => ({
       policy_id: policy.policy_id,
@@ -464,6 +520,8 @@ async function buildIndex(livePayload: ExportPayload): Promise<IndexPayload> {
       type: policy.type,
       effective_from: policy.effective_from,
       effective_to: policy.effective_to,
+      visibility: policy.visibility,
+      section_ids: policy.sections.map((section) => section.section_id),
       tags: policy.tags,
       path: policy.path,
     })),

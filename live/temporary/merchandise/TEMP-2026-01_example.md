@@ -4,6 +4,7 @@ title: "Temporary waiver for holiday surge response"
 status: active
 type: temporary
 domain: merchandise
+visibility: internal
 effective_from: 2026-01-10
 effective_to: 2026-02-15
 priority: 1
