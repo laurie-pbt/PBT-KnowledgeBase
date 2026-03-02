@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Customer KB Chat</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 0;
+        background: #f6f7fb;
+        color: #111827;
+      }
+      .container {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 20px 16px 32px;
+      }
+      h1 {
+        font-size: 1.25rem;
+        margin: 0 0 12px;
+      }
+      .hint {
+        margin: 0 0 16px;
+        color: #4b5563;
+      }
+      form {
+        display: flex;
+        gap: 8px;
+      }
+      input {
+        flex: 1;
+        padding: 10px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+      }
+      button {
+        padding: 10px 14px;
+        border: 0;
+        border-radius: 8px;
+        background: #111827;
+        color: white;
+        cursor: pointer;
+      }
+      button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      .messages {
+        margin-top: 16px;
+        display: grid;
+        gap: 12px;
+      }
+      .msg {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 10px 12px;
+      }
+      .msg.user {
+        border-color: #93c5fd;
+      }
+      .msg strong {
+        display: block;
+        margin-bottom: 6px;
+      }
+      .sources {
+        margin-top: 10px;
+      }
+      .sources ul {
+        margin: 8px 0 0;
+        padding-left: 18px;
+      }
+      .sources li {
+        margin: 6px 0;
+      }
+      code {
+        background: #f3f4f6;
+        padding: 0 4px;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Customer KB Chat</h1>
+      <p class="hint">Customer scope only (no auth). Uses live public policies.</p>
+      <form id="chat-form">
+        <input
+          id="question-input"
+          type="text"
+          placeholder="Ask a customer policy question..."
+          required
+        />
+        <button id="send-btn" type="submit">Send</button>
+      </form>
+      <div class="messages" id="messages"></div>
+    </div>
+
+    <script>
+      window.__KB_API_BASE_URL__ = __KB_API_BASE_URL_JSON__;
+    </script>
+    <script>
+      const form = document.getElementById("chat-form");
+      const input = document.getElementById("question-input");
+      const sendBtn = document.getElementById("send-btn");
+      const messages = document.getElementById("messages");
+
+      const configuredBase = (window.__KB_API_BASE_URL__ || "").trim();
+      const kbApiBaseUrl = configuredBase || window.location.origin;
+
+      function escapeHtml(value) {
+        return String(value)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function appendMessage(role, bodyHtml) {
+        const item = document.createElement("div");
+        item.className = `msg ${role}`;
+        item.innerHTML = bodyHtml;
+        messages.appendChild(item);
+      }
+
+      async function fetchPolicyTitle(policyId) {
+        try {
+          const response = await fetch(
+            `${kbApiBaseUrl}/v1/kb/policy/${encodeURIComponent(policyId)}`
+          );
+          if (!response.ok) {
+            return policyId;
+          }
+          const payload = await response.json();
+          return payload && typeof payload.title === "string" && payload.title.trim()
+            ? payload.title
+            : policyId;
+        } catch {
+          return policyId;
+        }
+      }
+
+      async function renderSources(citations) {
+        if (!Array.isArray(citations) || citations.length === 0) {
+          return "";
+        }
+
+        const titles = await Promise.all(
+          citations.map((citation) => fetchPolicyTitle(citation.policy_id))
+        );
+
+        const items = citations
+          .map((citation, index) => {
+            const title = titles[index] || citation.policy_id || "Policy";
+            const policyLink = `${kbApiBaseUrl}/v1/kb/policy/${encodeURIComponent(
+              citation.policy_id || ""
+            )}`;
+            const path = citation.path ? `<code>${escapeHtml(citation.path)}</code>` : "";
+            return `<li><a href="${escapeHtml(policyLink)}" target="_blank" rel="noreferrer">${escapeHtml(
+              title
+            )}</a>${path ? ` — ${path}` : ""}</li>`;
+          })
+          .join("");
+
+        return `<details class="sources"><summary>Sources (${citations.length})</summary><ul>${items}</ul></details>`;
+      }
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const question = input.value.trim();
+        if (!question) {
+          return;
+        }
+
+        appendMessage("user", `<strong>You</strong><div>${escapeHtml(question)}</div>`);
+        input.value = "";
+        sendBtn.disabled = true;
+
+        try {
+          const response = await fetch(`${kbApiBaseUrl}/v1/kb/answer`, {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ question, k: 3 }),
+          });
+          const payload = await response.json();
+
+          if (!response.ok) {
+            appendMessage(
+              "assistant",
+              `<strong>Assistant</strong><div>${escapeHtml(
+                payload?.message || "Request failed."
+              )}</div>`
+            );
+            return;
+          }
+
+          const sourcesHtml = await renderSources(payload.citations || []);
+          appendMessage(
+            "assistant",
+            `<strong>Assistant</strong><div>${escapeHtml(
+              payload.answer || "No answer returned."
+            )}</div>${sourcesHtml}`
+          );
+        } catch (error) {
+          appendMessage(
+            "assistant",
+            `<strong>Assistant</strong><div>${escapeHtml(
+              error?.message || "Network error."
+            )}</div>`
+          );
+        } finally {
+          sendBtn.disabled = false;
+          input.focus();
+        }
+      });
+    </script>
+  </body>
+</html>
