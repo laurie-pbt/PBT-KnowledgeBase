@@ -96,3 +96,20 @@ JSON exports are published to GitHub Pages on each push to `main`:
 - `https://<owner>.github.io/<repo>/policies.json`
 - `https://<owner>.github.io/<repo>/index.json`
 - `https://<owner>.github.io/<repo>/policies-draft.json` (only when present)
+
+## KB Service API contract
+
+The KB Service API contract is documented in [`openapi/kb-service.yaml`](openapi/kb-service.yaml); it defines `POST /v1/kb/search`, `GET /v1/kb/policy/{policy_id}`, and `POST /v1/kb/answer` while keeping `live/**`, `draft/**`, and `exports/**` as the canonical data flow.
+Policy section citations use stable `section_id` values generated from `policy_id` + normalized heading text so citation anchors remain deterministic across builds.
+
+## Running KB Service locally
+
+Build exports first so the service has runtime data, then run `npm run kb:dev` to start the HTTP API from `apps/kb-service/` (default port `4010`, override with `PORT=<port>`). For quick verification, run `npm run kb:smoke` for endpoint/scope checks and `npm run kb:answer-check` for answer retrieval + citation behavior (including live-first and draft-fallback warnings).
+Scope enforcement is server-side and derived from `Authorization` only; request body fields (including `scope`) cannot elevate access.
+Set `KB_DEBUG=1` to log internal answer retrieval details, including live/draft fallback decisions and score-threshold reasoning.
+Customer chat UI is available at `/customer-chat` and calls `/v1/kb/answer` without an `Authorization` header. Configure the API base via `NEXT_PUBLIC_KB_API_BASE_URL` (defaults to the current origin when unset). Run `npm run kb:customer-chat-smoke` for a basic end-to-end check that answers return and sources are live public only.
+Unauthenticated customer requests are rate limited in-memory per IP (default `60` requests per `60` seconds) and return `429` with the standard error payload when exceeded.
+
+## CI validation gate
+
+Run `npm run ci:validate` from the repository root to execute the full PR gate (`build:exports`, `check:exports`, `kb:smoke`, `kb:answer-check`, `kb:scope-check`, `kb:citation-check`, `kb:live-preference-check`, `kb:rate-limit-check`).
