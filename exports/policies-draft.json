@@ -1,8 +1,49 @@
 {
   "version": 2,
-  "generated_at": "2026-03-02T01:36:38.351Z",
+  "generated_at": "2026-03-02T04:21:57.772Z",
   "source": "draft",
   "policies": [
+    {
+      "policy_id": "DRAFT-LEAK-001",
+      "title": "Customer scope draft leak canary (test only)",
+      "status": "draft",
+      "type": "perpetual",
+      "domain": "merchandise",
+      "visibility": null,
+      "category_path": "draft/in-progress/merchandise",
+      "effective_from": null,
+      "effective_to": null,
+      "priority": 1,
+      "owner_team": "Policy Ops",
+      "approvers": [
+        "Head of Support"
+      ],
+      "jurisdiction": [
+        "Global"
+      ],
+      "applies_to": [
+        "Test harness"
+      ],
+      "tags": [
+        "test",
+        "canary",
+        "draft-leak"
+      ],
+      "path": "draft/in-progress/merchandise/DRAFT-LEAK-001_customer-scope-canary.md",
+      "sections": [
+        {
+          "section_id": "4905a46d5708aa19bfb35be5ca434c9123121280df12f569f62526fb0a4572a7",
+          "heading": "Summary",
+          "content": "Test-only draft canary policy. Must never appear in customer scope retrieval."
+        },
+        {
+          "section_id": "189799e95f65f874af0050fbc033e7c108dff60c3821b25a6fd8ce691c6585b8",
+          "heading": "Canary",
+          "content": "CANARY_PHRASE_DO_NOT_LEAK_TO_CUSTOMER_SCOPE_9f3d8c7a"
+        }
+      ],
+      "raw_markdown": "---\npolicy_id: DRAFT-LEAK-001\ntitle: \"Customer scope draft leak canary (test only)\"\nstatus: draft\ntype: perpetual\ndomain: merchandise\neffective_from:\neffective_to:\npriority: 1\nowner_team: \"Policy Ops\"\napprovers:\n  - \"Head of Support\"\njurisdiction:\n  - \"Global\"\napplies_to:\n  - \"Test harness\"\ntags:\n  - \"test\"\n  - \"canary\"\n  - \"draft-leak\"\n---\n\n# Summary\nTest-only draft canary policy. Must never appear in customer scope retrieval.\n\n# Canary\nCANARY_PHRASE_DO_NOT_LEAK_TO_CUSTOMER_SCOPE_9f3d8c7a\n"
+    },
     {
       "policy_id": "REF-NEW",
       "title": "Refund policy rewrite (draft)",
