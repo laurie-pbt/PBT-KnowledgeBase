@@ -1,0 +1,320 @@
+openapi: 3.0.3
+info:
+  title: PBT KB Service API
+  version: 1.0.0
+  description: >
+    API contract for querying the policy knowledge base backed by generated
+    policy exports.
+servers:
+  - url: https://api.example.com
+    description: Placeholder production URL
+tags:
+  - name: KB
+    description: Knowledge base endpoints
+security:
+  - bearerAuth: []
+paths:
+  /v1/kb/search:
+    post:
+      tags: [KB]
+      summary: Search knowledge base policies
+      operationId: searchPolicies
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v1/kb/policy/{policy_id}:
+    get:
+      tags: [KB]
+      summary: Get policy by policy ID
+      operationId: getPolicyById
+      parameters:
+        - name: policy_id
+          in: path
+          required: true
+          description: Canonical policy ID (for example REF-MERCH-001)
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Policy found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Policy'
+        '400':
+          description: Invalid policy ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Policy not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v1/kb/answer:
+    post:
+      tags: [KB]
+      summary: Generate an answer from KB policies (stub)
+      operationId: answerFromPolicies
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnswerRequest'
+      responses:
+        '200':
+          description: Answer generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswerResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '501':
+          description: Not implemented (current expected behavior)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Bearer JWT used by staff/manager clients.
+  schemas:
+    Error:
+      type: object
+      required: [code, message, requestId]
+      properties:
+        code:
+          type: string
+          example: POLICY_NOT_FOUND
+        message:
+          type: string
+          example: No policy found for REF-MERCH-999.
+        details:
+          description: Optional structured error context.
+          nullable: true
+          oneOf:
+            - type: object
+              additionalProperties: true
+            - type: array
+              items:
+                type: object
+                additionalProperties: true
+            - type: string
+        requestId:
+          type: string
+          example: req_01HVX5TZYJ4CC3TG6Y1XG4H5D0
+    PolicySummary:
+      type: object
+      required: [policy_id, title, status, type, visibility, path]
+      properties:
+        policy_id:
+          type: string
+          example: REF-MERCH-001
+        title:
+          type: string
+          example: Returns, refunds, and exchanges for merchandise
+        status:
+          type: string
+          example: active
+        type:
+          type: string
+          example: perpetual
+        visibility:
+          type: string
+          enum: [public, internal]
+        path:
+          type: string
+          example: live/perpetual/merchandise/REF-MERCH-001_returns-and-refunds.md
+        excerpt:
+          type: string
+          nullable: true
+          example: Change of mind returns are accepted within 30 days...
+        score:
+          type: number
+          format: float
+          nullable: true
+          example: 0.92
+    Policy:
+      type: object
+      required: [policy_id, title, status, type, visibility, path, raw_markdown]
+      properties:
+        policy_id:
+          type: string
+          example: REF-MERCH-001
+        title:
+          type: string
+        status:
+          type: string
+        type:
+          type: string
+        visibility:
+          type: string
+          enum: [public, internal]
+        path:
+          type: string
+        raw_markdown:
+          type: string
+          description: Canonical markdown source for the policy.
+        content:
+          type: string
+          nullable: true
+          description: Optional normalized text content if a service provides it.
+        sections:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/PolicySection'
+    SearchRequest:
+      type: object
+      required: [query]
+      properties:
+        query:
+          type: string
+          minLength: 1
+          example: refund for faulty product after 6 months
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 50
+          default: 10
+        visibility:
+          type: string
+          enum: [public, internal]
+          nullable: true
+          description: Optional visibility filter.
+        include_draft:
+          type: boolean
+          default: false
+          description: Defaults to false; production search should use live policies.
+    SearchResponse:
+      type: object
+      required: [results]
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicySummary'
+        total:
+          type: integer
+          minimum: 0
+          nullable: true
+        requestId:
+          type: string
+          nullable: true
+    AnswerRequest:
+      type: object
+      required: [question]
+      properties:
+        question:
+          type: string
+          minLength: 1
+          example: Can I get a refund for a faulty item after six months?
+        policy_ids:
+          type: array
+          description: Optional preselected policy IDs to constrain answering.
+          items:
+            type: string
+        audience:
+          type: string
+          enum: [customer, staff, manager]
+          default: staff
+    AnswerResponse:
+      type: object
+      required: [answer, citations, draft_warning]
+      properties:
+        answer:
+          type: string
+        citations:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnswerCitation'
+        draft_warning:
+          type: boolean
+        draft_warning_message:
+          type: string
+          nullable: true
+        requestId:
+          type: string
+          nullable: true
+    AnswerCitation:
+      type: object
+      required: [policy_id, path, section_heading, section_id, excerpt]
+      properties:
+        policy_id:
+          type: string
+        path:
+          type: string
+        section_heading:
+          type: string
+        section_id:
+          type: string
+        excerpt:
+          type: string
+    PolicySection:
+      type: object
+      required: [section_id, heading, content]
+      properties:
+        section_id:
+          type: string
+        heading:
+          type: string
+        content:
+          type: string
