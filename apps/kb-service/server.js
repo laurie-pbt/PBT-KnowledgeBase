@@ -7,6 +7,7 @@ const PORT = Number(process.env.PORT || 4010);
 const ROOT_DIR = path.resolve(__dirname, "../..");
 const EXPORTS_DIR = path.join(ROOT_DIR, "exports");
 const CUSTOMER_CHAT_HTML_PATH = path.join(__dirname, "public/customer-chat.html");
+const STAFF_UI_HTML_PATH = path.join(__dirname, "public/staff.html");
 
 const DEFAULT_K = 10;
 const MAX_K = 50;
@@ -885,6 +886,11 @@ async function handleCustomerChatPage(res, requestId) {
   sendHtml(res, 200, html, requestId);
 }
 
+async function handleStaffPage(res, requestId) {
+  const html = await fs.readFile(STAFF_UI_HTML_PATH, "utf8");
+  sendHtml(res, 200, html, requestId);
+}
+
 const server = http.createServer(async (req, res) => {
   const requestId = makeRequestId();
   const requestUrl = new URL(req.url || "/", `http://${req.headers.host || "localhost"}`);
@@ -929,6 +935,11 @@ const server = http.createServer(async (req, res) => {
 
     if (method === "GET" && (pathName === "/customer-chat" || pathName === "/customer-chat/")) {
       await handleCustomerChatPage(res, requestId);
+      return;
+    }
+
+    if (method === "GET" && (pathName === "/staff" || pathName === "/staff/")) {
+      await handleStaffPage(res, requestId);
       return;
     }
 

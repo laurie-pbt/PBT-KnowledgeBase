@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff v1</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: sans-serif;
+        background: #f4f5f7;
+        color: #111827;
+      }
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px 16px 40px;
+      }
+      h1 {
+        margin: 0 0 10px;
+      }
+      .hint {
+        margin: 0 0 12px;
+        color: #4b5563;
+      }
+      fieldset {
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        padding: 10px 12px;
+        margin: 0 0 12px;
+        background: #fff;
+      }
+      legend {
+        font-weight: 600;
+        padding: 0 4px;
+      }
+      .scope-option {
+        display: block;
+        margin: 8px 0;
+      }
+      textarea {
+        width: 100%;
+        box-sizing: border-box;
+        min-height: 110px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        padding: 10px 12px;
+        resize: vertical;
+        margin: 0 0 10px;
+      }
+      button {
+        border: 0;
+        border-radius: 8px;
+        background: #111827;
+        color: #fff;
+        padding: 10px 14px;
+        cursor: pointer;
+      }
+      button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      .card {
+        margin-top: 16px;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+        background: #fff;
+        padding: 12px;
+      }
+      .banner {
+        margin-bottom: 12px;
+        border: 2px solid #b91c1c;
+        background: #fee2e2;
+        color: #7f1d1d;
+        border-radius: 8px;
+        font-weight: 700;
+        padding: 10px 12px;
+      }
+      .answer {
+        white-space: pre-wrap;
+        line-height: 1.45;
+      }
+      .meta {
+        margin-top: 8px;
+        color: #374151;
+        font-size: 0.95rem;
+      }
+      ul {
+        margin: 8px 0 0;
+        padding-left: 18px;
+      }
+      li {
+        margin: 6px 0;
+      }
+      code {
+        background: #f3f4f6;
+        border-radius: 4px;
+        padding: 1px 4px;
+      }
+      .error {
+        color: #991b1b;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <h1>Staff v1</h1>
+      <p class="hint">Internal Q&A surface for policy lookups and citation review.</p>
+
+      <fieldset>
+        <legend>Scope</legend>
+        <label class="scope-option">
+          <input type="radio" name="scope" value="internal" checked />
+          Internal (default): live + draft
+        </label>
+        <label class="scope-option">
+          <input type="radio" name="scope" value="customer" />
+          Customer simulation: live + visibility=public only
+        </label>
+      </fieldset>
+
+      <textarea
+        id="question"
+        placeholder="Ask a policy question..."
+        required
+      ></textarea>
+      <button id="ask-btn" type="button">Ask</button>
+
+      <section class="card" id="result" hidden>
+        <div id="draft-banner" class="banner" hidden>DRAFT / NON-AUTHORITATIVE</div>
+        <div><strong>Answer</strong></div>
+        <div id="answer" class="answer"></div>
+        <div class="meta" id="mode-meta"></div>
+        <div style="margin-top: 12px"><strong>Citations</strong></div>
+        <ul id="citations"></ul>
+      </section>
+    </main>
+
+    <script>
+      const askBtn = document.getElementById("ask-btn");
+      const questionEl = document.getElementById("question");
+      const resultEl = document.getElementById("result");
+      const answerEl = document.getElementById("answer");
+      const modeMetaEl = document.getElementById("mode-meta");
+      const citationsEl = document.getElementById("citations");
+      const draftBannerEl = document.getElementById("draft-banner");
+
+      function selectedScope() {
+        const checked = document.querySelector('input[name="scope"]:checked');
+        return checked ? checked.value : "internal";
+      }
+
+      function escapeHtml(value) {
+        return String(value)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      async function askQuestion() {
+        const question = questionEl.value.trim();
+        if (!question) {
+          return;
+        }
+
+        const scope = selectedScope();
+        const headers = { "content-type": "application/json" };
+        if (scope === "internal") {
+          headers.authorization = "Bearer staff-ui";
+        }
+
+        askBtn.disabled = true;
+        resultEl.hidden = false;
+        answerEl.textContent = "Loading...";
+        modeMetaEl.textContent = "";
+        citationsEl.innerHTML = "";
+        draftBannerEl.hidden = true;
+
+        try {
+          const res = await fetch("/v1/kb/answer", {
+            method: "POST",
+            headers,
+            body: JSON.stringify({ question, k: 5 }),
+          });
+          const payload = await res.json();
+
+          if (!res.ok) {
+            answerEl.innerHTML = `<span class="error">${escapeHtml(
+              payload?.message || "Request failed."
+            )}</span>`;
+            return;
+          }
+
+          const citations = Array.isArray(payload?.citations) ? payload.citations : [];
+          const usedDraft =
+            Boolean(payload?.draft_warning) ||
+            citations.some((citation) => typeof citation?.path === "string" && citation.path.startsWith("draft/"));
+
+          if (usedDraft) {
+            draftBannerEl.hidden = false;
+          }
+
+          answerEl.textContent = typeof payload?.answer === "string" ? payload.answer : "";
+          modeMetaEl.textContent =
+            scope === "internal"
+              ? "Mode: Internal (draft fallback allowed)"
+              : "Mode: Customer simulation (live public only)";
+
+          if (citations.length === 0) {
+            citationsEl.innerHTML = "<li>No citations returned.</li>";
+          } else {
+            citationsEl.innerHTML = citations
+              .map((citation) => {
+                const policyId = citation?.policy_id || "unknown";
+                const sectionId = citation?.section_id || "unknown";
+                const policyPath = citation?.path || "unknown";
+                return `<li><code>${escapeHtml(policyId)}</code> · section <code>${escapeHtml(
+                  sectionId
+                )}</code> · <code>${escapeHtml(policyPath)}</code></li>`;
+              })
+              .join("");
+          }
+        } catch (error) {
+          answerEl.innerHTML = `<span class="error">${escapeHtml(
+            error?.message || "Network error."
+          )}</span>`;
+        } finally {
+          askBtn.disabled = false;
+        }
+      }
+
+      askBtn.addEventListener("click", askQuestion);
+      questionEl.addEventListener("keydown", (event) => {
+        if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
+          askQuestion();
+        }
+      });
+    </script>
+  </body>
+</html>
