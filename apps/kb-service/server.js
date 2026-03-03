@@ -8,6 +8,7 @@ const ROOT_DIR = path.resolve(__dirname, "../..");
 const EXPORTS_DIR = path.join(ROOT_DIR, "exports");
 const CUSTOMER_CHAT_HTML_PATH = path.join(__dirname, "public/customer-chat.html");
 const STAFF_UI_HTML_PATH = path.join(__dirname, "public/staff.html");
+const KB_STAFF_TOKEN = (process.env.KB_STAFF_TOKEN || "").trim();
 
 const DEFAULT_K = 10;
 const MAX_K = 50;
@@ -47,6 +48,15 @@ function sendHtml(res, statusCode, html, requestId) {
   res.end(html);
 }
 
+function sendText(res, statusCode, text, requestId) {
+  res.writeHead(statusCode, {
+    "content-type": "text/plain; charset=utf-8",
+    "content-length": Buffer.byteLength(text),
+    "x-request-id": requestId,
+  });
+  res.end(text);
+}
+
 function sendError(res, statusCode, code, message, requestId, details) {
   const payload = { code, message, requestId };
   if (details !== undefined) {
@@ -68,6 +78,24 @@ function resolveScopeFromAuth(req) {
 
   const token = match[1].trim();
   return token ? "internal" : "customer";
+}
+
+function hasValidStaffAuth(req) {
+  if (!KB_STAFF_TOKEN) {
+    return true;
+  }
+
+  const authHeader = req.headers.authorization;
+  if (typeof authHeader !== "string") {
+    return false;
+  }
+
+  const match = authHeader.match(/^Bearer\s+(.+)$/i);
+  if (!match) {
+    return false;
+  }
+
+  return match[1].trim() === KB_STAFF_TOKEN;
 }
 
 function isPolicyAllowedForScope(scope, source, visibility, allowDraftFallback = false) {
@@ -640,6 +668,50 @@ function buildAnswerText(citations, scope, usedDraft) {
   return `${intro}\n${lines.join("\n")}`;
 }
 
+function resolveGovernanceSource(pathValue) {
+  if (typeof pathValue !== "string") {
+    return "unknown";
+  }
+  if (pathValue.startsWith("live/")) {
+    return "live";
+  }
+  if (pathValue.startsWith("draft/")) {
+    return "draft";
+  }
+  return "unknown";
+}
+
+function buildAnswerGovernance(citations, data) {
+  const primaryCitation = citations[0];
+  if (!primaryCitation) {
+    return {
+      source: "unknown",
+      authoritative: false,
+      visibility: "internal",
+    };
+  }
+
+  const source = resolveGovernanceSource(primaryCitation.path);
+  let policy = null;
+
+  if (source === "live") {
+    policy = data.liveById.get(primaryCitation.policy_id) || null;
+  } else if (source === "draft") {
+    policy = data.draftById.get(primaryCitation.policy_id) || null;
+  } else {
+    policy =
+      data.liveById.get(primaryCitation.policy_id) ||
+      data.draftById.get(primaryCitation.policy_id) ||
+      null;
+  }
+
+  return {
+    source,
+    authoritative: source === "live",
+    visibility: policy?.visibility || "internal",
+  };
+}
+
 async function handleSearch(req, res, requestId, scope) {
   let body;
   try {
@@ -829,14 +901,16 @@ async function handleAnswer(req, res, requestId) {
 
   const maxCitations = requestedCitations ?? DEFAULT_ANSWER_CITATIONS;
   const scope = resolveScopeFromAuth(req);
+  const resolvedScope = scope;
   const data = await loadExportData();
   const { citations, usedDraft } = pickAnswerCitations(
-    scope,
+    resolvedScope,
     question,
     maxCitations,
     data
   );
-  const answer = buildAnswerText(citations, scope, usedDraft);
+  const answer = buildAnswerText(citations, resolvedScope, usedDraft);
+  const governance = buildAnswerGovernance(citations, data);
   const responseCitations = citations.map((citation) => ({
     policy_id: citation.policy_id,
     path: citation.path,
@@ -846,9 +920,9 @@ async function handleAnswer(req, res, requestId) {
   }));
 
   try {
-    assertCitationCompleteness(responseCitations, scope);
+    assertCitationCompleteness(responseCitations, resolvedScope);
   } catch (error) {
-    if (scope === "internal") {
+    if (resolvedScope === "internal") {
       sendError(
         res,
         500,
@@ -861,6 +935,20 @@ async function handleAnswer(req, res, requestId) {
     throw error;
   }
 
+  if (governance.source === "draft") {
+    const draftEvent = {
+      event: "draft_used",
+      policy_id: citations?.[0]?.policy_id || null,
+      policy_path: citations?.[0]?.path || null,
+      scope: resolvedScope,
+      visibility: governance.visibility,
+      requestId: req.id || null,
+      timestamp: new Date().toISOString(),
+    };
+
+    console.log(JSON.stringify(draftEvent));
+  }
+
   sendJson(
     res,
     200,
@@ -871,6 +959,7 @@ async function handleAnswer(req, res, requestId) {
       draft_warning_message: usedDraft
         ? "Draft policy content was used because no live policy section met the relevance threshold."
         : null,
+      governance,
     },
     requestId
   );
@@ -893,6 +982,7 @@ async function handleStaffPage(res, requestId) {
 
 const server = http.createServer(async (req, res) => {
   const requestId = makeRequestId();
+  req.id = requestId;
   const requestUrl = new URL(req.url || "/", `http://${req.headers.host || "localhost"}`);
   const method = req.method || "GET";
   const pathName = requestUrl.pathname;
@@ -939,6 +1029,15 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (method === "GET" && (pathName === "/staff" || pathName === "/staff/")) {
+      if (!hasValidStaffAuth(req)) {
+        sendText(
+          res,
+          401,
+          "Unauthorized: /staff requires Authorization: Bearer <KB_STAFF_TOKEN>.",
+          requestId
+        );
+        return;
+      }
       await handleStaffPage(res, requestId);
       return;
     }

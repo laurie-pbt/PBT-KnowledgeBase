@@ -3,6 +3,7 @@ const net = require("net");
 const { spawn } = require("child_process");
 
 const ROOT_DIR = path.resolve(__dirname, "..");
+const STAFF_TOKEN = (process.env.KB_STAFF_TOKEN || "").trim();
 
 function assert(condition, message) {
   if (!condition) {
@@ -37,9 +38,13 @@ function getFreePort() {
 }
 
 async function waitForReady(baseUrl, maxAttempts = 40) {
+  const headers = STAFF_TOKEN
+    ? { authorization: `Bearer ${STAFF_TOKEN}` }
+    : undefined;
+
   for (let i = 0; i < maxAttempts; i += 1) {
     try {
-      const response = await fetch(`${baseUrl}/staff`);
+      const response = await fetch(`${baseUrl}/staff`, { headers });
       if (response.status === 200) {
         return;
       }
@@ -66,7 +71,10 @@ async function run() {
   try {
     await waitForReady(baseUrl);
 
-    const response = await fetch(`${baseUrl}/staff`);
+    const headers = STAFF_TOKEN
+      ? { authorization: `Bearer ${STAFF_TOKEN}` }
+      : undefined;
+    const response = await fetch(`${baseUrl}/staff`, { headers });
     const html = await response.text();
     assert(response.status === 200, "Expected /staff to return 200.");
     assert(html.includes("Staff v1"), "Expected /staff page to contain 'Staff v1' marker.");

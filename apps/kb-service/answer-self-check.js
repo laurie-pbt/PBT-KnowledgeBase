@@ -1,5 +1,6 @@
 const path = require("path");
 const { spawn } = require("child_process");
+const { assertGovernance } = require("../../scripts/kb-answer-smoke.js");
 
 const ROOT_DIR = path.resolve(__dirname, "../..");
 const PORT = Number(process.env.KB_ANSWER_CHECK_PORT || 4021);
@@ -52,7 +53,12 @@ async function run() {
     stdio: "pipe",
   });
 
-  server.stdout.on("data", (data) => process.stdout.write(data));
+  server.stdout.on("data", (data) => {
+    const message = data.toString("utf8").trimEnd();
+    if (message) {
+      console.log(message);
+    }
+  });
   server.stderr.on("data", (data) => process.stderr.write(data));
 
   try {
@@ -74,11 +80,24 @@ async function run() {
       internalLive.json.draft_warning === false,
       "Internal live answer should not set draft warning."
     );
+    assertGovernance(internalLive.json);
 
-    const internalDraftFallback = await request("POST", "/v1/kb/answer", {
-      headers: { authorization: "Bearer internal-token" },
-      body: { question: "not yet effective draft policy under review", k: 2, scope: "customer" },
-    });
+    const originalLog = console.log;
+    let logBuffer = [];
+    console.log = (msg) => {
+      logBuffer.push(msg);
+      originalLog(msg);
+    };
+
+    let internalDraftFallback;
+    try {
+      internalDraftFallback = await request("POST", "/v1/kb/answer", {
+        headers: { authorization: "Bearer internal-token" },
+        body: { question: "not yet effective draft policy under review", k: 2, scope: "customer" },
+      });
+    } finally {
+      console.log = originalLog;
+    }
 
     assert(internalDraftFallback.status === 200, "Internal draft fallback answer should return 200.");
     assert(
@@ -104,6 +123,12 @@ async function run() {
         internalDraftFallback.json.draft_warning_message.length > 0,
       "Internal draft fallback should include draft_warning_message."
     );
+    assertGovernance(internalDraftFallback.json);
+
+    const draftLog = logBuffer.find((l) => l.includes('"event":"draft_used"'));
+    if (!draftLog) {
+      throw new Error("Draft usage event not logged");
+    }
 
     const customerDraftBlocked = await request("POST", "/v1/kb/answer", {
       body: { question: "not yet effective draft policy under review", k: 2 },
@@ -123,6 +148,11 @@ async function run() {
     assert(
       customerDraftBlocked.json.draft_warning === false,
       "Customer answer must not set draft warning."
+    );
+    assertGovernance(customerDraftBlocked.json);
+    assert(
+      customerDraftBlocked.json.governance.source !== "draft",
+      "Customer answer governance.source must never be draft."
     );
 
     console.log("KB answer self-check passed.");

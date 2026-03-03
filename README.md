@@ -115,6 +115,10 @@ Build exports first so the service has runtime data, then run `npm run kb:dev` t
 Scope enforcement is server-side and derived from `Authorization` only; request body fields (including `scope`) cannot elevate access.
 Set `KB_DEBUG=1` to log internal answer retrieval details, including live/draft fallback decisions and score-threshold reasoning.
 Customer chat UI is available at `/customer-chat` and calls `/v1/kb/answer` without an `Authorization` header. Configure the API base via `NEXT_PUBLIC_KB_API_BASE_URL` (defaults to the current origin when unset). Run `npm run kb:customer-chat-smoke` for a basic end-to-end check that answers return and sources are live public only.
+- Set `KB_STAFF_TOKEN` to require `Authorization: Bearer <KB_STAFF_TOKEN>` for `GET /staff`.
+- If `KB_STAFF_TOKEN` is unset, `GET /staff` remains available for local development.
+- `KB_STAFF_TOKEN` only gates the `/staff` page and does not alter answer scope resolution.
+- `/v1/kb/answer` without auth remains customer scope (`live` + `visibility: public` only).
 Unauthenticated customer requests are rate limited in-memory per IP (default `60` requests per `60` seconds) and return `429` with the standard error payload when exceeded.
 
 ## CI validation gate

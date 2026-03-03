@@ -291,6 +291,17 @@ components:
         draft_warning_message:
           type: string
           nullable: true
+        governance:
+          type: object
+          properties:
+            source:
+              type: string
+              enum: [live, draft, unknown]
+            authoritative:
+              type: boolean
+            visibility:
+              type: string
+              enum: [public, internal]
         requestId:
           type: string
           nullable: true
