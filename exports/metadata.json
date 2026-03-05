@@ -2,7 +2,7 @@
   "version": 1,
   "contract": "alice-publisher-v1",
   "export_schema_version": 2,
-  "generated_at": "2026-03-05T07:03:49.194Z",
+  "generated_at": "2026-03-05T07:21:16.646Z",
   "artifacts": {
     "policies": "exports/policies.json",
     "policies_draft": "exports/policies-draft.json",
@@ -13,6 +13,6 @@
     "actor_id": null,
     "request_id": null,
     "pr_number": null,
-    "merge_commit": "d1e337f2970110e3b8d87206762a9cbb6f4d1186"
+    "merge_commit": "617d3d6eddc458ff042063b70c0b85074b1a1f1d"
   }
 }
