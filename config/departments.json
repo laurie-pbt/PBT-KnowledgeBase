@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "departments": [
+    {
+      "id": "merchandise",
+      "display_name": "Merchandise"
+    },
+    {
+      "id": "online-training",
+      "display_name": "Online Training"
+    },
+    {
+      "id": "workshops",
+      "display_name": "Workshops"
+    }
+  ]
+}

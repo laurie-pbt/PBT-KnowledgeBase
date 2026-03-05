@@ -53,14 +53,14 @@
         "title": { "type": "string", "minLength": 1 },
         "status": { "type": "string", "minLength": 1 },
         "type": { "type": "string", "minLength": 1 },
-        "domain": { "enum": ["merchandise", "workshops", "online-training"] },
+        "domain": { "type": "string", "pattern": "^[a-z0-9-]+$" },
         "visibility": {
           "anyOf": [
             { "type": "null" },
             { "enum": ["public", "internal"] }
           ]
         },
-        "category_path": { "type": "string", "pattern": "^draft/" },
+        "category_path": { "type": "string", "pattern": "^draft/(in-progress|experiments)/[a-z0-9-]+$" },
         "effective_from": {
           "anyOf": [
             { "type": "null" },
@@ -79,7 +79,7 @@
         "jurisdiction": { "type": "array", "items": { "type": "string" } },
         "applies_to": { "type": "array", "items": { "type": "string" } },
         "tags": { "type": "array", "items": { "type": "string" } },
-        "path": { "type": "string", "pattern": "^draft/" },
+        "path": { "type": "string", "pattern": "^draft/(in-progress|experiments)/[a-z0-9-]+/" },
         "sections": {
           "type": "array",
           "items": { "$ref": "#/definitions/policySection" }

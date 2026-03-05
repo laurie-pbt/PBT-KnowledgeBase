@@ -4,6 +4,7 @@ import crypto from "crypto";
 import { spawnSync } from "child_process";
 import matter from "gray-matter";
 import fg from "fast-glob";
+import { loadDepartmentIds } from "./departments-config";
 
 const BASE_REQUIRED_FIELDS = [
   "policy_id",
@@ -16,11 +17,10 @@ const BASE_REQUIRED_FIELDS = [
   "tags",
 ] as const;
 
-const VALID_DOMAINS = ["merchandise", "workshops", "online-training"] as const;
 const VALID_VISIBILITY = ["public", "internal"] as const;
 
 type BaseRequiredField = (typeof BASE_REQUIRED_FIELDS)[number];
-type Domain = (typeof VALID_DOMAINS)[number];
+type Domain = string;
 type Visibility = (typeof VALID_VISIBILITY)[number];
 type LivePolicyType = "perpetual" | "temporary";
 type PolicyRoot = "live" | "draft";
@@ -139,7 +139,10 @@ type PathContext = {
   categoryPath: string;
 };
 
-function parsePathContext(relativePath: string): PathContext {
+function parsePathContext(
+  relativePath: string,
+  validDomains: Set<string>
+): PathContext {
   const segments = relativePath.split("/");
   if (segments.length < 4) {
     throw new Error(
@@ -155,7 +158,7 @@ function parsePathContext(relativePath: string): PathContext {
   const statusFromPath = root === "live" ? "live" : "draft";
   const categoryPath = segments.slice(0, 3).join("/");
   const domainSegment = segments[2];
-  const domainFromPath = validateDomain(domainSegment, relativePath);
+  const domainFromPath = validateDomain(domainSegment, relativePath, validDomains);
   const context: PathContext = {
     root,
     statusFromPath,
@@ -184,15 +187,21 @@ function normalizeString(value: unknown): string | null {
   return trimmed === "" ? null : trimmed;
 }
 
-function validateDomain(value: string, filePath: string): Domain {
-  if (!VALID_DOMAINS.includes(value as Domain)) {
+function validateDomain(
+  value: string,
+  filePath: string,
+  validDomains: Set<string>
+): Domain {
+  if (!validDomains.has(value)) {
     throw new Error(
-      `Invalid domain '${value}' in ${filePath}. Expected one of ${VALID_DOMAINS.join(
+      `Invalid domain '${value}' in ${filePath}. Expected one of ${[
+        ...validDomains,
+      ].join(
         ", "
       )}.`
     );
   }
-  return value as Domain;
+  return value;
 }
 
 function resolveStatus(data: Record<string, unknown>, context: PathContext): string {
@@ -233,11 +242,12 @@ function resolveType(
 function resolveDomain(
   data: Record<string, unknown>,
   context: PathContext,
-  filePath: string
+  filePath: string,
+  validDomains: Set<string>
 ): Domain {
   const rawDomain = normalizeString(data.domain);
   if (rawDomain) {
-    const validated = validateDomain(rawDomain, filePath);
+    const validated = validateDomain(rawDomain, filePath, validDomains);
     if (validated !== context.domainFromPath) {
       throw new Error(
         `Domain mismatch in ${filePath}: frontmatter '${validated}' does not match folder '${context.domainFromPath}'.`
@@ -465,7 +475,8 @@ function buildPolicyRecord(
 async function loadPolicies(
   pattern: string,
   source: "live" | "draft",
-  filterByDate: boolean
+  filterByDate: boolean,
+  validDomains: Set<string>
 ): Promise<ExportPayload> {
   const files = await fg(pattern, {
     cwd: process.cwd(),
@@ -483,13 +494,18 @@ async function loadPolicies(
     const data = parsed.data as Record<string, unknown>;
 
     const relativePath = normalizePath(path.relative(process.cwd(), filePath));
-    const context = parsePathContext(relativePath);
+    const context = parsePathContext(relativePath, validDomains);
 
     assertRequiredFields(data, relativePath, BASE_REQUIRED_FIELDS);
 
     const resolvedStatus = resolveStatus(data, context);
     const resolvedType = resolveType(data, context, relativePath);
-    const resolvedDomain = resolveDomain(data, context, relativePath);
+    const resolvedDomain = resolveDomain(
+      data,
+      context,
+      relativePath,
+      validDomains
+    );
     const resolvedVisibility = resolveVisibility(data, context, relativePath);
     const {
       effectiveFromDate,
@@ -667,8 +683,19 @@ async function buildIndex(livePayload: ExportPayload): Promise<IndexPayload> {
 }
 
 async function main(): Promise<void> {
-  const livePayload = await loadPolicies("live/**/*.md", "live", true);
-  const draftPayload = await loadPolicies("draft/**/*.md", "draft", false);
+  const validDomains = new Set(await loadDepartmentIds(process.cwd()));
+  const livePayload = await loadPolicies(
+    "live/**/*.md",
+    "live",
+    true,
+    validDomains
+  );
+  const draftPayload = await loadPolicies(
+    "draft/**/*.md",
+    "draft",
+    false,
+    validDomains
+  );
   assertUniquePolicyIds(livePayload.policies, "live");
 
   await writeJson(path.join(process.cwd(), "exports/policies.json"), livePayload);

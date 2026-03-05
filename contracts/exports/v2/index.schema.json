@@ -57,7 +57,7 @@
           "items": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
         },
         "tags": { "type": "array", "items": { "type": "string" } },
-        "path": { "type": "string", "pattern": "^live/" }
+        "path": { "type": "string", "pattern": "^live/(perpetual|temporary)/[a-z0-9-]+/" }
       }
     }
   }

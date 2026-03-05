@@ -5,14 +5,16 @@
     "node": "22.x"
   },
   "scripts": {
+    "check:departments": "ts-node scripts/check-departments.ts",
+    "bootstrap:department": "ts-node scripts/bootstrap-department.ts",
     "build:exports": "ts-node scripts/build-policy-exports.ts",
     "check:exports": "npm run check:exports:visibility && npm run check:exports:contract",
     "check:exports:visibility": "ts-node scripts/check-policy-exports-visibility.ts",
     "check:exports:contract": "ts-node scripts/check-export-contract-shape.ts",
     "check:publish:guard": "ts-node scripts/check-publish-policy-manager-guard.ts",
     "check:publish:audit-chain": "ts-node scripts/check-publish-audit-chain.ts",
-    "validate:exports": "npm run build:exports && npm run check:exports",
-    "ci:validate": "npm run build:exports && npm run check:exports && npm run check:publish:guard && npm run check:publish:audit-chain && npm run kb:smoke && npm run kb:staff-ui-smoke && npm run kb:answer-check && npm run kb:scope-check && npm run kb:customer-no-draft-leak-check && npm run kb:customer-chat-smoke && npm run kb:citation-check && npm run kb:live-preference-check && npm run kb:rate-limit-check",
+    "validate:exports": "npm run check:departments && npm run build:exports && npm run check:exports",
+    "ci:validate": "npm run check:departments && npm run build:exports && npm run check:exports && npm run check:publish:guard && npm run check:publish:audit-chain && npm run kb:smoke && npm run kb:staff-ui-smoke && npm run kb:answer-check && npm run kb:scope-check && npm run kb:customer-no-draft-leak-check && npm run kb:customer-chat-smoke && npm run kb:citation-check && npm run kb:live-preference-check && npm run kb:rate-limit-check",
     "kb:dev": "node apps/kb-service/server.js",
     "kb:smoke": "node apps/kb-service/smoke.js",
     "kb:staff-ui-smoke": "node scripts/kb-staff-ui-smoke.js",

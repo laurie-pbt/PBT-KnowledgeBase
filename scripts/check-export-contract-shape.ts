@@ -1,11 +1,11 @@
 import fs from "fs/promises";
 import path from "path";
+import { loadDepartmentIds } from "./departments-config";
 
 type JsonObject = Record<string, unknown>;
 
 type PolicyMode = "live" | "draft";
 
-const DOMAIN_VALUES = ["merchandise", "workshops", "online-training"];
 const VISIBILITY_VALUES = ["public", "internal"];
 const POLICY_RECORD_KEYS = [
   "policy_id",
@@ -188,7 +188,12 @@ function assertSection(value: unknown, context: string): string {
   return sectionId;
 }
 
-function assertPolicyRecord(value: unknown, mode: PolicyMode, context: string): string {
+function assertPolicyRecord(
+  value: unknown,
+  mode: PolicyMode,
+  context: string,
+  validDomains: Set<string>
+): string {
   if (!isObject(value)) {
     fail(`${context} must be an object.`);
   }
@@ -199,18 +204,36 @@ function assertPolicyRecord(value: unknown, mode: PolicyMode, context: string): 
   asNonEmptyString(value.title, `${context}.title`);
   asNonEmptyString(value.status, `${context}.status`);
   asNonEmptyString(value.type, `${context}.type`);
-  assertEnum(value.domain, DOMAIN_VALUES, `${context}.domain`);
+  const domain = asString(value.domain, `${context}.domain`);
+  if (!validDomains.has(domain)) {
+    fail(`${context}.domain '${domain}' is not declared in config/departments.json.`);
+  }
 
   if (mode === "live") {
     assertEnum(value.visibility, VISIBILITY_VALUES, `${context}.visibility`);
     assertIsoDate(value.effective_from, `${context}.effective_from`);
     const categoryPath = asString(value.category_path, `${context}.category_path`);
-    if (!/^live\/(perpetual|temporary)\/(merchandise|workshops|online-training)$/.test(categoryPath)) {
-      fail(`${context}.category_path must be under live/perpetual|temporary/<domain>.`);
+    const categorySegments = categoryPath.split("/");
+    if (
+      categorySegments.length !== 3 ||
+      categorySegments[0] !== "live" ||
+      (categorySegments[1] !== "perpetual" &&
+        categorySegments[1] !== "temporary") ||
+      !validDomains.has(categorySegments[2])
+    ) {
+      fail(
+        `${context}.category_path must be live/perpetual|temporary/<configured-domain>.`
+      );
     }
     const policyPath = asString(value.path, `${context}.path`);
-    if (!policyPath.startsWith("live/")) {
-      fail(`${context}.path must start with 'live/'.`);
+    const pathSegments = policyPath.split("/");
+    if (
+      pathSegments.length < 4 ||
+      pathSegments[0] !== "live" ||
+      (pathSegments[1] !== "perpetual" && pathSegments[1] !== "temporary") ||
+      !validDomains.has(pathSegments[2])
+    ) {
+      fail(`${context}.path must be under live/perpetual|temporary/<configured-domain>/.`);
     }
   } else {
     if (value.visibility !== null) {
@@ -220,12 +243,28 @@ function assertPolicyRecord(value: unknown, mode: PolicyMode, context: string): 
       assertIsoDate(value.effective_from, `${context}.effective_from`);
     }
     const categoryPath = asString(value.category_path, `${context}.category_path`);
-    if (!categoryPath.startsWith("draft/")) {
-      fail(`${context}.category_path must start with 'draft/'.`);
+    const categorySegments = categoryPath.split("/");
+    if (
+      categorySegments.length !== 3 ||
+      categorySegments[0] !== "draft" ||
+      !["in-progress", "experiments"].includes(categorySegments[1]) ||
+      !validDomains.has(categorySegments[2])
+    ) {
+      fail(
+        `${context}.category_path must be draft/in-progress|experiments/<configured-domain>.`
+      );
     }
     const policyPath = asString(value.path, `${context}.path`);
-    if (!policyPath.startsWith("draft/")) {
-      fail(`${context}.path must start with 'draft/'.`);
+    const pathSegments = policyPath.split("/");
+    if (
+      pathSegments.length < 4 ||
+      pathSegments[0] !== "draft" ||
+      !["in-progress", "experiments"].includes(pathSegments[1]) ||
+      !validDomains.has(pathSegments[2])
+    ) {
+      fail(
+        `${context}.path must be under draft/in-progress|experiments/<configured-domain>/.`
+      );
     }
   }
 
@@ -254,7 +293,11 @@ function assertPolicyRecord(value: unknown, mode: PolicyMode, context: string): 
   return policyId;
 }
 
-function assertIndexRecord(value: unknown, context: string): { policyId: string; sectionIds: string[] } {
+function assertIndexRecord(
+  value: unknown,
+  context: string,
+  validDomains: Set<string>
+): { policyId: string; sectionIds: string[] } {
   if (!isObject(value)) {
     fail(`${context} must be an object.`);
   }
@@ -282,8 +325,14 @@ function assertIndexRecord(value: unknown, context: string): { policyId: string;
   );
 
   const pathValue = asString(value.path, `${context}.path`);
-  if (!pathValue.startsWith("live/")) {
-    fail(`${context}.path must start with 'live/'.`);
+  const pathSegments = pathValue.split("/");
+  if (
+    pathSegments.length < 4 ||
+    pathSegments[0] !== "live" ||
+    (pathSegments[1] !== "perpetual" && pathSegments[1] !== "temporary") ||
+    !validDomains.has(pathSegments[2])
+  ) {
+    fail(`${context}.path must be under live/perpetual|temporary/<configured-domain>/.`);
   }
 
   assertStringArray(value.tags, `${context}.tags`);
@@ -306,6 +355,7 @@ function readSchemaConst(schema: unknown, fieldName: string, context: string): n
 
 async function main(): Promise<void> {
   const root = process.cwd();
+  const validDomains = new Set(await loadDepartmentIds(root));
 
   const policiesPath = path.join(root, "exports", "policies.json");
   const draftPath = path.join(root, "exports", "policies-draft.json");
@@ -414,7 +464,8 @@ async function main(): Promise<void> {
     const policyId = assertPolicyRecord(
       policiesRaw.policies[index],
       "live",
-      `exports/policies.json.policies[${index}]`
+      `exports/policies.json.policies[${index}]`,
+      validDomains
     );
 
     if (livePolicyIds.has(policyId)) {
@@ -434,7 +485,8 @@ async function main(): Promise<void> {
     const policyId = assertPolicyRecord(
       draftRaw.policies[index],
       "draft",
-      `exports/policies-draft.json.policies[${index}]`
+      `exports/policies-draft.json.policies[${index}]`,
+      validDomains
     );
 
     if (draftPolicyIds.has(policyId)) {
@@ -445,7 +497,11 @@ async function main(): Promise<void> {
 
   const indexPolicyIds = new Set<string>();
   for (let index = 0; index < indexRaw.policies.length; index += 1) {
-    const parsed = assertIndexRecord(indexRaw.policies[index], `exports/index.json.policies[${index}]`);
+    const parsed = assertIndexRecord(
+      indexRaw.policies[index],
+      `exports/index.json.policies[${index}]`,
+      validDomains
+    );
     if (indexPolicyIds.has(parsed.policyId)) {
       fail(`exports/index.json has duplicate policy_id '${parsed.policyId}'.`);
     }

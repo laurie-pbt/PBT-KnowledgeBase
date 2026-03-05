@@ -9,7 +9,8 @@
 
 ## PR Conventions
 1. PR title must be:
-   - `kb(publish): <policy_id or batch-id>`
+   - `kb(publish): <policy_id or batch-id>` for policy publish
+   - `kb(department): <department-id>` for department bootstrap
 2. PR body must include:
    - actor id
    - source system (`alice`)
@@ -20,11 +21,12 @@
 ## Mandatory Checks
 Publisher PRs must pass:
 1. `build:exports`
-2. `check:exports`
-3. `check:publish:guard`
-4. `check:publish:audit-chain`
-5. scope/citation/live-preference checks (via `ci:validate`)
-6. GitHub check `Publisher PR Contract` (enforces publisher title/body/branch conventions)
+2. `check:departments`
+3. `check:exports`
+4. `check:publish:guard`
+5. `check:publish:audit-chain`
+6. scope/citation/live-preference checks (via `ci:validate`)
+7. GitHub check `Publisher PR Contract` (enforces publisher title/body/branch conventions)
 
 ## Manager Confirmation and Validation Gate
 1. `npm run publish:policy` requires `--manager`.

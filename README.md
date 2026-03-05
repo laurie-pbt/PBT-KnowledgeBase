@@ -45,7 +45,7 @@ docs/
 - `templates/`: Canonical policy templates.
 - `exports/`: Generated JSON payloads.
 - `scripts/`: Build utilities.
-- `domain`: Department identifier (`merchandise`, `workshops`, `online-training`) that must match the folder path.
+- `domain`: Department identifier that must match folder path and be declared in `config/departments.json`.
 
 ## Draft vs live visibility
 
@@ -61,6 +61,22 @@ docs/
 2. Fill in the YAML frontmatter fields and sections.
 3. Save the file in the appropriate department folder under `draft/in-progress/` (or `draft/experiments/`).
 4. Run `npm run build:exports` to validate the policy content.
+
+## Bootstrap a new department
+
+Use the department bootstrap script (manager-confirmed):
+
+```bash
+npm run bootstrap:department -- --manager --department content --display-name "Content"
+```
+
+- Adds department to `config/departments.json`.
+- Ensures folder scaffold exists for:
+  - `live/perpetual/<department>/`
+  - `live/temporary/<department>/`
+  - `draft/in-progress/<department>/`
+  - `draft/experiments/<department>/`
+- Commit these changes on a branch and open a PR (no direct `main` writes).
 
 ## Promote draft -> live
 
@@ -137,5 +153,5 @@ Unauthenticated customer requests are rate limited in-memory per IP (default `60
 
 ## CI validation gate
 
-Run `npm run ci:validate` from the repository root to execute the full PR gate (`build:exports`, `check:exports` including contract drift checks, `check:publish:guard`, `check:publish:audit-chain`, `kb:smoke`, `kb:answer-check`, `kb:scope-check`, `kb:customer-chat-smoke`, `kb:citation-check`, `kb:live-preference-check`, `kb:rate-limit-check`).
+Run `npm run ci:validate` from the repository root to execute the full PR gate (`check:departments`, `build:exports`, `check:exports` including contract drift checks, `check:publish:guard`, `check:publish:audit-chain`, `kb:smoke`, `kb:answer-check`, `kb:scope-check`, `kb:customer-chat-smoke`, `kb:citation-check`, `kb:live-preference-check`, `kb:rate-limit-check`).
 `main` publication also runs `ci:validate` in the pages workflow before export publishing, so there is no bypass path around contract checks.

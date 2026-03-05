@@ -23,8 +23,9 @@ jobs:
           const body = String(pr.body || "");
           const headRef = String(pr.head && pr.head.ref ? pr.head.ref : "");
 
-          const isPublisherPr = /^kb\(publish\):\s+\S+/.test(title);
-          if (!isPublisherPr) {
+          const isPublishPr = /^kb\(publish\):\s+\S+/.test(title);
+          const isDepartmentPr = /^kb\(department\):\s+\S+/.test(title);
+          if (!isPublishPr && !isDepartmentPr) {
             console.log("Not a publisher PR title; skipping publisher contract checks.");
             process.exit(0);
           }
@@ -40,13 +41,25 @@ jobs:
           const checks = [
             { label: "Actor ID", regex: /(^|\n)\s*-?\s*Actor ID\s*:\s*\S+/i },
             { label: "Source system alice", regex: /(^|\n)\s*-?\s*Source system\s*:\s*`?alice`?/i },
-            { label: "Policy IDs", regex: /(^|\n)\s*-?\s*Policy IDs\s*:\s*\S+/i },
             { label: "Reason / ticket", regex: /(^|\n)\s*-?\s*Reason\s*\/\s*ticket\s*:\s*\S+/i },
-            {
-              label: "Export generated timestamp",
-              regex: /(^|\n)\s*-?\s*Export generated timestamp(?: \(UTC\))?\s*:\s*\S+/i,
-            },
           ];
+
+          if (isPublishPr) {
+            checks.push(
+              { label: "Policy IDs", regex: /(^|\n)\s*-?\s*Policy IDs\s*:\s*\S+/i },
+              {
+                label: "Export generated timestamp",
+                regex: /(^|\n)\s*-?\s*Export generated timestamp(?: \(UTC\))?\s*:\s*\S+/i,
+              }
+            );
+          }
+
+          if (isDepartmentPr) {
+            checks.push(
+              { label: "Department ID", regex: /(^|\n)\s*-?\s*Department ID\s*:\s*\S+/i },
+              { label: "Request ID", regex: /(^|\n)\s*-?\s*Request ID\s*:\s*\S+/i }
+            );
+          }
 
           for (const check of checks) {
             if (!check.regex.test(body)) {

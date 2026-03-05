@@ -2,7 +2,7 @@
 
 Date: 2026-03-05  
 Owner: KB Platform  
-Contract Version: 1.1.0
+Contract Version: 1.2.0
 
 ## 1. Purpose
 Define how Alice submits formal policy changes safely and scalably into this repository.
@@ -13,6 +13,7 @@ Define how Alice submits formal policy changes safely and scalably into this rep
 3. `exports/*.json` are generated artifacts.
 4. `main` remains protected and review-gated.
 5. Machine-readable export contract schemas live in `contracts/exports/v2/**`.
+6. Department ids are managed in `config/departments.json`.
 
 ## 3. Publish Mechanism
 1. Alice never commits directly to `main`.
@@ -36,6 +37,7 @@ Define how Alice submits formal policy changes safely and scalably into this rep
 ## 5. PR Requirements for Publisher-generated Changes
 1. PR title format:
    - `kb(publish): <policy_id or batch-id>`
+   - `kb(department): <department-id>` for department bootstrap PRs
 2. PR body includes:
    - actor id
    - source system (`alice`)
@@ -44,6 +46,7 @@ Define how Alice submits formal policy changes safely and scalably into this rep
    - generated export timestamp
 3. Required checks:
    - `build:exports`
+   - `check:departments`
    - `check:exports`
    - `check:publish:guard`
    - `check:publish:audit-chain`

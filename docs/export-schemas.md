@@ -41,9 +41,9 @@ Top-level shape:
 - `title`: string
 - `status`: string
 - `type`: string
-- `domain`: `merchandise | workshops | online-training`
+- `domain`: lowercase kebab-case department id (`[a-z0-9-]+`) declared in `config/departments.json`
 - `visibility`: `public | internal`
-- `category_path`: string (for example `live/perpetual/merchandise`)
+- `category_path`: string (for example `live/perpetual/content`)
 - `effective_from`: `YYYY-MM-DD`
 - `effective_to`: `YYYY-MM-DD | null`
 - `priority`: number

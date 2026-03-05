@@ -5,6 +5,8 @@
 - Actor ID:
 - Source system: `alice`
 - Policy IDs:
+- Department ID:
+- Request ID:
 - Reason / ticket:
 - Export generated timestamp (UTC):
 
@@ -19,7 +21,8 @@
 - [ ] Live policy changes are limited to `live/**`
 - [ ] Effective dates are valid and reflect intended go-live timing
 - [ ] Temporary policy expiries are set and not in the past
+- [ ] I ran `npm run check:departments`
 - [ ] I ran `npm run build:exports` and validated the outputs
 - [ ] I ran `npm run check:exports` and contract checks passed
-- [ ] If this is a publisher PR, the title is `kb(publish): <policy_id or batch-id>`
+- [ ] If this is a publisher PR, the title is `kb(publish): <policy_id or batch-id>` or `kb(department): <department-id>`
 - [ ] No direct push/bypass path to `main` was used

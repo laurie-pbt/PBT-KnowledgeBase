@@ -4,6 +4,7 @@ import { existsSync } from "fs";
 import { spawnSync } from "child_process";
 import matter from "gray-matter";
 import fg from "fast-glob";
+import { loadDepartmentIds } from "./departments-config";
 
 const BASE_REQUIRED_FIELDS = [
   "policy_id",
@@ -16,11 +17,10 @@ const BASE_REQUIRED_FIELDS = [
   "tags",
 ] as const;
 
-const VALID_DOMAINS = ["merchandise", "workshops", "online-training"] as const;
 const VALID_VISIBILITY = ["public", "internal"] as const;
 
 type BaseRequiredField = (typeof BASE_REQUIRED_FIELDS)[number];
-type Domain = (typeof VALID_DOMAINS)[number];
+type Domain = string;
 type Visibility = (typeof VALID_VISIBILITY)[number];
 type LiveType = "perpetual" | "temporary";
 
@@ -200,15 +200,21 @@ function isDraftPath(relativePath: string): boolean {
   return relativePath.startsWith("draft/") && relativePath.endsWith(".md");
 }
 
-function validateDomain(value: string, filePath: string): Domain {
-  if (!VALID_DOMAINS.includes(value as Domain)) {
+function validateDomain(
+  value: string,
+  filePath: string,
+  validDomains: Set<string>
+): Domain {
+  if (!validDomains.has(value)) {
     fail(
-      `Invalid frontmatter field 'domain' in ${filePath}: '${value}'. Expected one of ${VALID_DOMAINS.join(
+      `Invalid frontmatter field 'domain' in ${filePath}: '${value}'. Expected one of ${[
+        ...validDomains,
+      ].join(
         ", "
       )}.`
     );
   }
-  return value as Domain;
+  return value;
 }
 
 async function resolveDraftFile(sourceInput: string): Promise<string> {
@@ -295,6 +301,7 @@ async function assertLivePolicyIdIsUnique(
 
 async function main(): Promise<void> {
   const options = parseArgs(process.argv.slice(2));
+  const validDomains = new Set(await loadDepartmentIds(process.cwd()));
 
   if (!options.managerConfirmed) {
     fail(
@@ -316,7 +323,11 @@ async function main(): Promise<void> {
       `Draft policy path must include stage/domain/file segments: ${sourceRelativePath}`
     );
   }
-  const domainFromPath = validateDomain(pathSegments[2], sourceRelativePath);
+  const domainFromPath = validateDomain(
+    pathSegments[2],
+    sourceRelativePath,
+    validDomains
+  );
 
   const policyId = normalizeString(data.policy_id);
   if (!policyId) {
@@ -324,7 +335,11 @@ async function main(): Promise<void> {
   }
 
   const resolvedDomainValue = normalizeString(data.domain) ?? domainFromPath;
-  const resolvedDomain = validateDomain(resolvedDomainValue, sourceRelativePath);
+  const resolvedDomain = validateDomain(
+    resolvedDomainValue,
+    sourceRelativePath,
+    validDomains
+  );
   if (resolvedDomain !== domainFromPath) {
     fail(
       `Frontmatter field 'domain' in ${sourceRelativePath} must match folder domain '${domainFromPath}'.`

@@ -11,6 +11,7 @@ Versioning:
 - Export payload major: `2` (via each schema `properties.version.const`).
 - Metadata payload major: `1`.
 - Contract family id: `alice-publisher-v1`.
+- Department domain values are config-driven from `config/departments.json` (not hardcoded in schema enum).
 
 CI enforcement:
 - `npm run check:exports:contract` validates generated exports against contract expectations and schema version constants.

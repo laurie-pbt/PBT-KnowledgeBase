@@ -7,6 +7,18 @@ All notable changes to the Alice publisher integration contract are recorded her
 - Previous major versions remain supported for at least 90 days from release date.
 - Removal dates and required client actions must be documented in this changelog.
 
+## [1.2.0] - 2026-03-05
+Added:
+- `config/departments.json` as source-of-truth for allowed department ids.
+- Department scaffold validation check `npm run check:departments`.
+- Department bootstrap script `npm run bootstrap:department -- --manager --department <id>`.
+
+Changed:
+- `build:exports`, `publish:policy`, and contract shape checks now validate domains from `config/departments.json` (not hardcoded arrays).
+- Export schema domain fields changed from fixed enum values to slug pattern (`[a-z0-9-]+`) with config-driven validation in runtime checks.
+- CI gate now runs `check:departments`.
+- Publisher PR conventions now include `kb(department): <department-id>` for department bootstrap PRs.
+
 ## [1.1.0] - 2026-03-05
 Added:
 - Machine-readable JSON Schemas under `contracts/exports/v2/` for `policies.json`, `policies-draft.json`, `index.json`, and `metadata.json`.
