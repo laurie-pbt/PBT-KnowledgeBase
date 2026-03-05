@@ -2,6 +2,16 @@
 
 This repository stores policy documents and exports JSON bundles for use by agents and apps.
 
+## Alice Publisher Contract
+
+- Contract: [`docs/alice-publisher-integration-contract.md`](docs/alice-publisher-integration-contract.md)
+- Publisher workflow: [`docs/publisher-workflow.md`](docs/publisher-workflow.md)
+- Export schemas: [`docs/export-schemas.md`](docs/export-schemas.md)
+- Machine-readable schemas: [`contracts/exports/v2/`](contracts/exports/v2/)
+- Contract changelog: [`docs/alice-publisher-contract-changelog.md`](docs/alice-publisher-contract-changelog.md)
+- Contract release-note template: [`docs/templates/alice-contract-release-note-template.md`](docs/templates/alice-contract-release-note-template.md)
+- Publisher PR title format: `kb(publish): <policy_id or batch-id>`
+
 ## Folder structure
 
 ```
@@ -26,6 +36,7 @@ draft/
 templates/
 exports/
 scripts/
+docs/
 .github/
 ```
 
@@ -86,8 +97,10 @@ This generates:
 - `exports/policies.json` (active live policies only; the only export agents read)
 - `exports/policies-draft.json` (all draft policies for app testing)
 - `exports/index.json` (minimal metadata index, including visibility)
+- `exports/metadata.json` (machine-readable publish metadata for downstream sync health checks)
 
 Export schema version is now `v2` (`"version": 2`) because policy `sections` changed from a key/value map to an array of section objects and each section now includes stable `section_id`.
+Schema compatibility windows and contract changes are documented in `docs/` and must preserve at least 90 days of backward compatibility for major schema changes.
 
 ### Exports v1 → v2 migration
 
@@ -103,6 +116,7 @@ JSON exports are published to GitHub Pages on each push to `main`:
 - `https://<owner>.github.io/<repo>/policies.json`
 - `https://<owner>.github.io/<repo>/index.json`
 - `https://<owner>.github.io/<repo>/policies-draft.json` (only when present)
+- `https://<owner>.github.io/<repo>/metadata.json`
 
 ## KB Service API contract
 
@@ -123,4 +137,5 @@ Unauthenticated customer requests are rate limited in-memory per IP (default `60
 
 ## CI validation gate
 
-Run `npm run ci:validate` from the repository root to execute the full PR gate (`build:exports`, `check:exports`, `kb:smoke`, `kb:answer-check`, `kb:scope-check`, `kb:citation-check`, `kb:live-preference-check`, `kb:rate-limit-check`).
+Run `npm run ci:validate` from the repository root to execute the full PR gate (`build:exports`, `check:exports` including contract drift checks, `check:publish:guard`, `check:publish:audit-chain`, `kb:smoke`, `kb:answer-check`, `kb:scope-check`, `kb:customer-chat-smoke`, `kb:citation-check`, `kb:live-preference-check`, `kb:rate-limit-check`).
+`main` publication also runs `ci:validate` in the pages workflow before export publishing, so there is no bypass path around contract checks.

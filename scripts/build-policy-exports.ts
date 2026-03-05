@@ -1,6 +1,7 @@
 import path from "path";
 import fs from "fs/promises";
 import crypto from "crypto";
+import { spawnSync } from "child_process";
 import matter from "gray-matter";
 import fg from "fast-glob";
 
@@ -75,8 +76,34 @@ type IndexPayload = {
   }>;
 };
 
+type ExportMetadataPayload = {
+  version: 1;
+  contract: "alice-publisher-v1";
+  export_schema_version: 2;
+  generated_at: string;
+  artifacts: {
+    policies: string;
+    policies_draft: string;
+    index: string;
+  };
+  publish: {
+    source_system: string | null;
+    actor_id: string | null;
+    request_id: string | null;
+    pr_number: number | null;
+    merge_commit: string | null;
+  };
+};
+
 function normalizePath(filePath: string): string {
   return filePath.split(path.sep).join("/");
+}
+
+function asRecord(value: unknown): Record<string, unknown> | null {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return null;
+  }
+  return value as Record<string, unknown>;
 }
 
 function assertRequiredFields(
@@ -504,6 +531,117 @@ async function loadPolicies(
   };
 }
 
+function assertUniquePolicyIds(policies: PolicyRecord[], source: "live" | "draft"): void {
+  const seen = new Map<string, string>();
+
+  for (const policy of policies) {
+    const policyId = String(policy.policy_id ?? "").trim();
+    if (!policyId) {
+      throw new Error(`Empty policy_id found in ${source} scope at ${policy.path}.`);
+    }
+
+    const existingPath = seen.get(policyId);
+    if (existingPath) {
+      throw new Error(
+        `Duplicate policy_id '${policyId}' detected in ${source} scope: ${existingPath} and ${policy.path}.`
+      );
+    }
+
+    seen.set(policyId, policy.path);
+  }
+}
+
+function getGitOutput(args: string[]): string | null {
+  const result = spawnSync("git", args, {
+    cwd: process.cwd(),
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "ignore"],
+  });
+
+  if (result.status !== 0) {
+    return null;
+  }
+
+  return normalizeString(result.stdout);
+}
+
+function parseInteger(value: string | null): number | null {
+  if (!value) {
+    return null;
+  }
+
+  const parsed = Number.parseInt(value, 10);
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    return null;
+  }
+  return parsed;
+}
+
+function parsePrNumberFromText(value: string | null): number | null {
+  if (!value) {
+    return null;
+  }
+
+  const match = /#(\d+)\b/.exec(value);
+  return match ? parseInteger(match[1]) : null;
+}
+
+async function readGitHubEventPayload(): Promise<Record<string, unknown> | null> {
+  const eventPath = normalizeString(process.env.GITHUB_EVENT_PATH);
+  if (!eventPath) {
+    return null;
+  }
+
+  try {
+    const raw = await fs.readFile(eventPath, "utf8");
+    return asRecord(JSON.parse(raw));
+  } catch {
+    return null;
+  }
+}
+
+async function buildExportMetadata(
+  livePayload: ExportPayload
+): Promise<ExportMetadataPayload> {
+  const eventPayload = await readGitHubEventPayload();
+  const pullRequest = asRecord(eventPayload?.pull_request);
+  const headCommit = asRecord(eventPayload?.head_commit);
+
+  const prNumberFromEnv =
+    parseInteger(normalizeString(process.env.PUBLISH_PR_NUMBER)) ??
+    parseInteger(normalizeString(process.env.GITHUB_PR_NUMBER));
+  const prNumberFromEvent =
+    (typeof pullRequest?.number === "number" ? pullRequest.number : null) ??
+    (typeof eventPayload?.number === "number" ? eventPayload.number : null);
+  const prNumberFromMessage =
+    parsePrNumberFromText(normalizeString(headCommit?.message)) ??
+    parsePrNumberFromText(getGitOutput(["show", "-s", "--format=%B", "HEAD"]));
+
+  const prNumber = prNumberFromEnv ?? prNumberFromEvent ?? prNumberFromMessage;
+
+  return {
+    version: 1,
+    contract: "alice-publisher-v1",
+    export_schema_version: livePayload.version,
+    generated_at: livePayload.generated_at,
+    artifacts: {
+      policies: "exports/policies.json",
+      policies_draft: "exports/policies-draft.json",
+      index: "exports/index.json",
+    },
+    publish: {
+      source_system: normalizeString(process.env.PUBLISH_SOURCE_SYSTEM),
+      actor_id: normalizeString(process.env.PUBLISH_ACTOR_ID),
+      request_id: normalizeString(process.env.PUBLISH_REQUEST_ID),
+      pr_number: prNumber,
+      merge_commit:
+        normalizeString(process.env.PUBLISH_MERGE_COMMIT) ??
+        normalizeString(process.env.GITHUB_SHA) ??
+        getGitOutput(["rev-parse", "HEAD"]),
+    },
+  };
+}
+
 async function writeJson(filePath: string, payload: unknown): Promise<void> {
   await fs.mkdir(path.dirname(filePath), { recursive: true });
   await fs.writeFile(filePath, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
@@ -531,6 +669,7 @@ async function buildIndex(livePayload: ExportPayload): Promise<IndexPayload> {
 async function main(): Promise<void> {
   const livePayload = await loadPolicies("live/**/*.md", "live", true);
   const draftPayload = await loadPolicies("draft/**/*.md", "draft", false);
+  assertUniquePolicyIds(livePayload.policies, "live");
 
   await writeJson(path.join(process.cwd(), "exports/policies.json"), livePayload);
   await writeJson(
@@ -540,6 +679,9 @@ async function main(): Promise<void> {
 
   const indexPayload = await buildIndex(livePayload);
   await writeJson(path.join(process.cwd(), "exports/index.json"), indexPayload);
+
+  const metadataPayload = await buildExportMetadata(livePayload);
+  await writeJson(path.join(process.cwd(), "exports/metadata.json"), metadataPayload);
 }
 
 main().catch((error) => {

@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://pbt.example/contracts/exports/v2/index.schema.json",
+  "title": "PBT Policy Index Export v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "generated_at", "policies"],
+  "properties": {
+    "version": { "const": 2 },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "policies": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/indexPolicyRecord" }
+    }
+  },
+  "definitions": {
+    "indexPolicyRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_id",
+        "title",
+        "status",
+        "type",
+        "effective_from",
+        "effective_to",
+        "visibility",
+        "section_ids",
+        "tags",
+        "path"
+      ],
+      "properties": {
+        "policy_id": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "status": { "type": "string", "minLength": 1 },
+        "type": { "type": "string", "minLength": 1 },
+        "effective_from": {
+          "anyOf": [
+            { "type": "null" },
+            { "type": "string", "format": "date" }
+          ]
+        },
+        "effective_to": {
+          "anyOf": [
+            { "type": "null" },
+            { "type": "string", "format": "date" }
+          ]
+        },
+        "visibility": {
+          "anyOf": [
+            { "type": "null" },
+            { "enum": ["public", "internal"] }
+          ]
+        },
+        "section_ids": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "path": { "type": "string", "pattern": "^live/" }
+      }
+    }
+  }
+}

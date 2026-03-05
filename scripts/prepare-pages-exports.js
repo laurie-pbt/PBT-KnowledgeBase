@@ -3,7 +3,7 @@ const path = require("path");
 
 const EXPORTS_DIR = path.join(process.cwd(), "exports");
 const PUBLIC_DIR = path.join(process.cwd(), "public");
-const REQUIRED_FILES = ["policies.json", "index.json"];
+const REQUIRED_FILES = ["policies.json", "index.json", "metadata.json"];
 const OPTIONAL_FILES = ["policies-draft.json"];
 
 async function fileExists(filePath) {

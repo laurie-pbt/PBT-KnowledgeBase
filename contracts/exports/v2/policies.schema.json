@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://pbt.example/contracts/exports/v2/policies.schema.json",
+  "title": "PBT Live Policies Export v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "generated_at", "source", "policies"],
+  "properties": {
+    "version": { "const": 2 },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "source": { "const": "live" },
+    "policies": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/livePolicyRecord" }
+    }
+  },
+  "definitions": {
+    "policySection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["section_id", "heading", "content"],
+      "properties": {
+        "section_id": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "heading": { "type": "string" },
+        "content": { "type": "string" }
+      }
+    },
+    "livePolicyRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_id",
+        "title",
+        "status",
+        "type",
+        "domain",
+        "visibility",
+        "category_path",
+        "effective_from",
+        "effective_to",
+        "priority",
+        "owner_team",
+        "approvers",
+        "jurisdiction",
+        "applies_to",
+        "tags",
+        "path",
+        "sections",
+        "raw_markdown"
+      ],
+      "properties": {
+        "policy_id": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "status": { "type": "string", "minLength": 1 },
+        "type": { "type": "string", "minLength": 1 },
+        "domain": { "enum": ["merchandise", "workshops", "online-training"] },
+        "visibility": { "enum": ["public", "internal"] },
+        "category_path": { "type": "string", "pattern": "^live/(perpetual|temporary)/(merchandise|workshops|online-training)$" },
+        "effective_from": { "type": "string", "format": "date" },
+        "effective_to": {
+          "anyOf": [
+            { "type": "null" },
+            { "type": "string", "format": "date" }
+          ]
+        },
+        "priority": { "type": "number" },
+        "owner_team": { "type": "string", "minLength": 1 },
+        "approvers": { "type": "array", "items": { "type": "string" } },
+        "jurisdiction": { "type": "array", "items": { "type": "string" } },
+        "applies_to": { "type": "array", "items": { "type": "string" } },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "path": { "type": "string", "pattern": "^live/" },
+        "sections": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/policySection" }
+        },
+        "raw_markdown": { "type": "string" }
+      }
+    }
+  }
+}

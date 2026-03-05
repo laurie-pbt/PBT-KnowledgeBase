@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://pbt.example/contracts/exports/v2/metadata.schema.json",
+  "title": "PBT Export Metadata v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "contract",
+    "export_schema_version",
+    "generated_at",
+    "artifacts",
+    "publish"
+  ],
+  "properties": {
+    "version": { "const": 1 },
+    "contract": { "const": "alice-publisher-v1" },
+    "export_schema_version": { "const": 2 },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policies", "policies_draft", "index"],
+      "properties": {
+        "policies": { "const": "exports/policies.json" },
+        "policies_draft": { "const": "exports/policies-draft.json" },
+        "index": { "const": "exports/index.json" }
+      }
+    },
+    "publish": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_system", "actor_id", "request_id", "pr_number", "merge_commit"],
+      "properties": {
+        "source_system": { "anyOf": [{ "type": "null" }, { "type": "string", "minLength": 1 }] },
+        "actor_id": { "anyOf": [{ "type": "null" }, { "type": "string", "minLength": 1 }] },
+        "request_id": { "anyOf": [{ "type": "null" }, { "type": "string", "minLength": 1 }] },
+        "pr_number": { "anyOf": [{ "type": "null" }, { "type": "integer", "minimum": 1 }] },
+        "merge_commit": {
+          "anyOf": [
+            { "type": "null" },
+            { "type": "string", "pattern": "^[a-f0-9]{40}$" }
+          ]
+        }
+      }
+    }
+  }
+}

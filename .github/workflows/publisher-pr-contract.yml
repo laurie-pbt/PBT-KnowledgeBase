@@ -1,0 +1,63 @@
+name: Publisher PR Contract
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  validate-publisher-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate publisher PR conventions
+        run: |
+          node <<'NODE'
+          const fs = require("fs");
+
+          const eventPath = process.env.GITHUB_EVENT_PATH;
+          const payload = JSON.parse(fs.readFileSync(eventPath, "utf8"));
+          const pr = payload.pull_request || {};
+          const title = String(pr.title || "");
+          const body = String(pr.body || "");
+          const headRef = String(pr.head && pr.head.ref ? pr.head.ref : "");
+
+          const isPublisherPr = /^kb\(publish\):\s+\S+/.test(title);
+          if (!isPublisherPr) {
+            console.log("Not a publisher PR title; skipping publisher contract checks.");
+            process.exit(0);
+          }
+
+          const failures = [];
+
+          if (!/^publisher\/alice\/.+/.test(headRef) && !/^publisher\/alice-/.test(headRef)) {
+            failures.push(
+              `Branch '${headRef}' must follow publisher branch strategy (recommended: publisher/alice/<request-id> or publisher/alice-<request-id>).`
+            );
+          }
+
+          const checks = [
+            { label: "Actor ID", regex: /(^|\n)\s*-?\s*Actor ID\s*:\s*\S+/i },
+            { label: "Source system alice", regex: /(^|\n)\s*-?\s*Source system\s*:\s*`?alice`?/i },
+            { label: "Policy IDs", regex: /(^|\n)\s*-?\s*Policy IDs\s*:\s*\S+/i },
+            { label: "Reason / ticket", regex: /(^|\n)\s*-?\s*Reason\s*\/\s*ticket\s*:\s*\S+/i },
+            {
+              label: "Export generated timestamp",
+              regex: /(^|\n)\s*-?\s*Export generated timestamp(?: \(UTC\))?\s*:\s*\S+/i,
+            },
+          ];
+
+          for (const check of checks) {
+            if (!check.regex.test(body)) {
+              failures.push(`PR body missing required publisher field: ${check.label}`);
+            }
+          }
+
+          if (failures.length > 0) {
+            console.error("Publisher PR contract validation failed:\n- " + failures.join("\n- "));
+            process.exit(1);
+          }
+
+          console.log("Publisher PR contract validation passed.");
+          NODE
