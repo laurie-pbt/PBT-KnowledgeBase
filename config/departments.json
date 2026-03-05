@@ -18,6 +18,30 @@
       "display_name": "Workshops",
       "status": "active",
       "updated_at": "2026-03-05T00:00:00.000Z"
+    },
+    {
+      "id": "compliance",
+      "display_name": "Compliance",
+      "status": "active",
+      "updated_at": "2026-03-05T00:00:00.000Z"
+    },
+    {
+      "id": "customer-service",
+      "display_name": "Customer Service",
+      "status": "active",
+      "updated_at": "2026-03-05T00:00:00.000Z"
+    },
+    {
+      "id": "marketing",
+      "display_name": "Marketing",
+      "status": "active",
+      "updated_at": "2026-03-05T00:00:00.000Z"
+    },
+    {
+      "id": "operations",
+      "display_name": "Operations",
+      "status": "active",
+      "updated_at": "2026-03-05T00:00:00.000Z"
     }
   ]
 }
