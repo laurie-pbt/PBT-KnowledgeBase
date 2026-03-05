@@ -3,10 +3,12 @@
 ## Publisher Metadata (required for `kb(publish): ...` PRs)
 
 - Actor ID:
+- Actor Role:
 - Source system: `alice`
 - Policy IDs:
 - Department ID:
 - Request ID:
+- Mode (archive|purge):
 - Reason / ticket:
 - Export generated timestamp (UTC):
 
@@ -24,5 +26,5 @@
 - [ ] I ran `npm run check:departments`
 - [ ] I ran `npm run build:exports` and validated the outputs
 - [ ] I ran `npm run check:exports` and contract checks passed
-- [ ] If this is a publisher PR, the title is `kb(publish): <policy_id or batch-id>` or `kb(department): <department-id>`
+- [ ] If this is a publisher PR, the title is `kb(publish): <policy_id or batch-id>`, `kb(department): <department-id>`, `kb(department-retire): <department-id>`, or `kb(department-purge): <department-id>`
 - [ ] No direct push/bypass path to `main` was used

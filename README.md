@@ -78,6 +78,31 @@ npm run bootstrap:department -- --manager --department content --display-name "C
   - `draft/experiments/<department>/`
 - Commit these changes on a branch and open a PR (no direct `main` writes).
 
+## Update or retire a department
+
+Update metadata (display name and/or status):
+
+```bash
+npm run update:department -- --manager --department content --display-name "Content Team" --status deprecated --actor-role manager --reason "Consolidation planning" --request-id req_123
+```
+
+Retire with archive (Option A, safe default):
+
+```bash
+npm run retire:department -- --manager --department content --mode archive --actor-role manager --reason "Department decommission" --request-id req_124
+```
+
+Purge all department content (Option B, break-glass):
+
+```bash
+npm run retire:department -- --manager --department content --mode purge --actor-role admin --reason "Approved hard delete" --request-id req_125 --confirm "delete department"
+```
+
+- `archive` mode moves department folders to `archive/departments/<department>/<timestamp>/` and sets status to `retired`.
+- `purge` mode deletes department content from `live/**` and `draft/**`, and removes the department from `config/departments.json`.
+- Purge is admin-only and requires exact confirmation phrase `delete department`.
+- Department lifecycle events are appended to `audit/department-lifecycle-events.jsonl`.
+
 ## Promote draft -> live
 
 Use the manager-only publish CLI so required live metadata is enforced:
@@ -153,5 +178,5 @@ Unauthenticated customer requests are rate limited in-memory per IP (default `60
 
 ## CI validation gate
 
-Run `npm run ci:validate` from the repository root to execute the full PR gate (`check:departments`, `build:exports`, `check:exports` including contract drift checks, `check:publish:guard`, `check:publish:audit-chain`, `kb:smoke`, `kb:answer-check`, `kb:scope-check`, `kb:customer-chat-smoke`, `kb:citation-check`, `kb:live-preference-check`, `kb:rate-limit-check`).
+Run `npm run ci:validate` from the repository root to execute the full PR gate (`check:departments`, `check:department-lifecycle`, `build:exports`, `check:exports` including contract drift checks, `check:publish:guard`, `check:publish:audit-chain`, `kb:smoke`, `kb:answer-check`, `kb:scope-check`, `kb:customer-chat-smoke`, `kb:citation-check`, `kb:live-preference-check`, `kb:rate-limit-check`).
 `main` publication also runs `ci:validate` in the pages workflow before export publishing, so there is no bypass path around contract checks.

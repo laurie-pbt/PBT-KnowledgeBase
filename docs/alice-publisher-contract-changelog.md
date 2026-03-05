@@ -7,6 +7,18 @@ All notable changes to the Alice publisher integration contract are recorded her
 - Previous major versions remain supported for at least 90 days from release date.
 - Removal dates and required client actions must be documented in this changelog.
 
+## [1.3.0] - 2026-03-05
+Added:
+- Department lifecycle scripts: `update:department` and `retire:department` (archive/purge modes).
+- Department lifecycle validation check `npm run check:department-lifecycle` (archive behavior, purge safeguards, non-active publish blocking).
+- Department lifecycle audit log output at `audit/department-lifecycle-events.jsonl`.
+
+Changed:
+- `config/departments.json` schema upgraded to version `2` with `status` and `updated_at`.
+- `publish:policy` now allows only `active` departments.
+- PR convention support expanded to `kb(department-retire): <id>` and `kb(department-purge): <id>`.
+- CI gate now includes `check:department-lifecycle`.
+
 ## [1.2.0] - 2026-03-05
 Added:
 - `config/departments.json` as source-of-truth for allowed department ids.

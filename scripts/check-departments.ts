@@ -30,6 +30,10 @@ async function main(): Promise<void> {
 
   let checkedDirectories = 0;
   for (const department of config.departments) {
+    if (department.status === "retired") {
+      continue;
+    }
+
     const requiredDirs = getDepartmentScaffoldDirectories(department.id);
     for (const relativeDir of requiredDirs) {
       const absolutePath = path.join(root, relativeDir);

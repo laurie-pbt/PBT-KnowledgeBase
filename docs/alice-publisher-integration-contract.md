@@ -2,7 +2,7 @@
 
 Date: 2026-03-05  
 Owner: KB Platform  
-Contract Version: 1.2.0
+Contract Version: 1.3.0
 
 ## 1. Purpose
 Define how Alice submits formal policy changes safely and scalably into this repository.
@@ -38,15 +38,22 @@ Define how Alice submits formal policy changes safely and scalably into this rep
 1. PR title format:
    - `kb(publish): <policy_id or batch-id>`
    - `kb(department): <department-id>` for department bootstrap PRs
+   - `kb(department-retire): <department-id>` for archive/retire
+   - `kb(department-purge): <department-id>` for break-glass purge
 2. PR body includes:
    - actor id
+   - actor role
    - source system (`alice`)
    - policy ids
+   - department id
+   - request id
+   - mode (`archive|purge`) for retire/purge operations
    - reason / ticket
    - generated export timestamp
 3. Required checks:
    - `build:exports`
    - `check:departments`
+   - `check:department-lifecycle`
    - `check:exports`
    - `check:publish:guard`
    - `check:publish:audit-chain`

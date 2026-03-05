@@ -4,7 +4,11 @@ import path from "path";
 export type DepartmentEntry = {
   id: string;
   display_name: string;
+  status: DepartmentStatus;
+  updated_at: string;
 };
+
+export type DepartmentStatus = "active" | "deprecated" | "retired";
 
 export type DepartmentsConfig = {
   version: number;
@@ -46,6 +50,28 @@ function assertValidDisplayName(value: unknown, context: string): string {
   return displayName;
 }
 
+function assertValidIsoDateTime(value: unknown, context: string): string {
+  const dateTime = normalizeString(value);
+  if (!dateTime) {
+    fail(`${context} must be a non-empty ISO-8601 string.`);
+  }
+  if (!dateTime.includes("T") || Number.isNaN(Date.parse(dateTime))) {
+    fail(`${context} '${dateTime}' is not a valid ISO-8601 datetime.`);
+  }
+  return dateTime;
+}
+
+function assertValidDepartmentStatus(value: unknown, context: string): DepartmentStatus {
+  const status = normalizeString(value);
+  if (!status) {
+    fail(`${context} must be provided.`);
+  }
+  if (!["active", "deprecated", "retired"].includes(status)) {
+    fail(`${context} '${status}' is invalid. Expected active|deprecated|retired.`);
+  }
+  return status as DepartmentStatus;
+}
+
 export function getDepartmentsConfigPath(rootDir: string = process.cwd()): string {
   return path.join(rootDir, "config", "departments.json");
 }
@@ -58,9 +84,9 @@ export async function loadDepartmentsConfig(
   const parsed = JSON.parse(raw) as Record<string, unknown>;
 
   const version = parsed.version;
-  if (version !== 1) {
+  if (version !== 2) {
     fail(
-      `Invalid departments config version in ${configPath}. Expected version=1, received '${String(
+      `Invalid departments config version in ${configPath}. Expected version=2, received '${String(
         version
       )}'.`
     );
@@ -89,24 +115,51 @@ export async function loadDepartmentsConfig(
       entry.display_name,
       `Invalid departments config entry '${id}' field 'display_name'`
     );
+    const status = assertValidDepartmentStatus(
+      entry.status,
+      `Invalid departments config entry '${id}' field 'status'`
+    );
+    const updatedAt = assertValidIsoDateTime(
+      entry.updated_at,
+      `Invalid departments config entry '${id}' field 'updated_at'`
+    );
 
     if (seenIds.has(id)) {
       fail(`Duplicate department id '${id}' in ${configPath}.`);
     }
 
     seenIds.add(id);
-    departments.push({ id, display_name: displayName });
+    departments.push({
+      id,
+      display_name: displayName,
+      status,
+      updated_at: updatedAt,
+    });
   }
 
   return {
-    version: 1,
+    version: 2,
     departments,
   };
 }
 
-export async function loadDepartmentIds(rootDir: string = process.cwd()): Promise<string[]> {
+export async function loadDepartmentIds(
+  rootDir: string = process.cwd(),
+  statuses?: DepartmentStatus[]
+): Promise<string[]> {
   const config = await loadDepartmentsConfig(rootDir);
-  return config.departments.map((department) => department.id);
+  const statusFilter = statuses ? new Set(statuses) : null;
+  return config.departments
+    .filter((department) =>
+      statusFilter ? statusFilter.has(department.status) : true
+    )
+    .map((department) => department.id);
+}
+
+export async function loadActiveDepartmentIds(
+  rootDir: string = process.cwd()
+): Promise<string[]> {
+  return loadDepartmentIds(rootDir, ["active"]);
 }
 
 export async function writeDepartmentsConfig(
@@ -117,7 +170,7 @@ export async function writeDepartmentsConfig(
   await fs.mkdir(path.dirname(configPath), { recursive: true });
 
   const normalized: DepartmentsConfig = {
-    version: 1,
+    version: 2,
     departments: [...config.departments].sort((a, b) => a.id.localeCompare(b.id)),
   };
 
@@ -138,4 +191,8 @@ export function defaultDisplayNameFromDepartmentId(departmentId: string): string
     .split("-")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+export function nowIsoString(): string {
+  return new Date().toISOString();
 }

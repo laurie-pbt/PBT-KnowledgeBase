@@ -4,7 +4,7 @@ import { existsSync } from "fs";
 import { spawnSync } from "child_process";
 import matter from "gray-matter";
 import fg from "fast-glob";
-import { loadDepartmentIds } from "./departments-config";
+import { loadActiveDepartmentIds } from "./departments-config";
 
 const BASE_REQUIRED_FIELDS = [
   "policy_id",
@@ -301,7 +301,7 @@ async function assertLivePolicyIdIsUnique(
 
 async function main(): Promise<void> {
   const options = parseArgs(process.argv.slice(2));
-  const validDomains = new Set(await loadDepartmentIds(process.cwd()));
+  const validDomains = new Set(await loadActiveDepartmentIds(process.cwd()));
 
   if (!options.managerConfirmed) {
     fail(

@@ -5,6 +5,7 @@ import {
   defaultDisplayNameFromDepartmentId,
   getDepartmentScaffoldDirectories,
   loadDepartmentsConfig,
+  nowIsoString,
   writeDepartmentsConfig,
 } from "./departments-config";
 
@@ -106,7 +107,12 @@ async function main(): Promise<void> {
   const existing = config.departments.find((department) => department.id === departmentId);
 
   if (!existing) {
-    config.departments.push({ id: departmentId, display_name: displayName });
+    config.departments.push({
+      id: departmentId,
+      display_name: displayName,
+      status: "active",
+      updated_at: nowIsoString(),
+    });
     await writeDepartmentsConfig(config, process.cwd());
   }
 

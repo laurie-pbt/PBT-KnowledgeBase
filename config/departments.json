@@ -1,17 +1,23 @@
 {
-  "version": 1,
+  "version": 2,
   "departments": [
     {
       "id": "merchandise",
-      "display_name": "Merchandise"
+      "display_name": "Merchandise",
+      "status": "active",
+      "updated_at": "2026-03-05T00:00:00.000Z"
     },
     {
       "id": "online-training",
-      "display_name": "Online Training"
+      "display_name": "Online Training",
+      "status": "active",
+      "updated_at": "2026-03-05T00:00:00.000Z"
     },
     {
       "id": "workshops",
-      "display_name": "Workshops"
+      "display_name": "Workshops",
+      "status": "active",
+      "updated_at": "2026-03-05T00:00:00.000Z"
     }
   ]
 }

@@ -25,7 +25,9 @@ jobs:
 
           const isPublishPr = /^kb\(publish\):\s+\S+/.test(title);
           const isDepartmentPr = /^kb\(department\):\s+\S+/.test(title);
-          if (!isPublishPr && !isDepartmentPr) {
+          const isDepartmentRetirePr = /^kb\(department-retire\):\s+\S+/.test(title);
+          const isDepartmentPurgePr = /^kb\(department-purge\):\s+\S+/.test(title);
+          if (!isPublishPr && !isDepartmentPr && !isDepartmentRetirePr && !isDepartmentPurgePr) {
             console.log("Not a publisher PR title; skipping publisher contract checks.");
             process.exit(0);
           }
@@ -40,6 +42,7 @@ jobs:
 
           const checks = [
             { label: "Actor ID", regex: /(^|\n)\s*-?\s*Actor ID\s*:\s*\S+/i },
+            { label: "Actor Role", regex: /(^|\n)\s*-?\s*Actor Role\s*:\s*\S+/i },
             { label: "Source system alice", regex: /(^|\n)\s*-?\s*Source system\s*:\s*`?alice`?/i },
             { label: "Reason / ticket", regex: /(^|\n)\s*-?\s*Reason\s*\/\s*ticket\s*:\s*\S+/i },
           ];
@@ -58,6 +61,14 @@ jobs:
             checks.push(
               { label: "Department ID", regex: /(^|\n)\s*-?\s*Department ID\s*:\s*\S+/i },
               { label: "Request ID", regex: /(^|\n)\s*-?\s*Request ID\s*:\s*\S+/i }
+            );
+          }
+
+          if (isDepartmentRetirePr || isDepartmentPurgePr) {
+            checks.push(
+              { label: "Department ID", regex: /(^|\n)\s*-?\s*Department ID\s*:\s*\S+/i },
+              { label: "Request ID", regex: /(^|\n)\s*-?\s*Request ID\s*:\s*\S+/i },
+              { label: "Mode", regex: /(^|\n)\s*-?\s*Mode\s*:\s*(archive|purge)\b/i }
             );
           }
 
