@@ -17,12 +17,12 @@ applies_to:
   - "Customer Service"
   - "Operations"
 tags:
-  - "Workshops"
+  - "Customer Experience"
 ---
 
 # Workshop Credit Policy
 
-## Workshop Credit Policy
+# Workshop Credit Policy
 
 **Department:** Workshops  
 **Policy Owner:** Kaisey
@@ -31,96 +31,81 @@ tags:
 
 ## Purpose
 
-The purpose of this policy is to provide clear, consistent guidelines for the issuance and management of credits for Progressing Ballet Technique (PBT) Certification Teachers Workshops. This policy ensures fairness for all participants and supports the logistical and financial planning required to deliver high-quality workshops globally.
+The purpose of this policy is to provide clear, consistent guidelines for the granting, use, and management of credits for Progressing Ballet Technique (PBT) workshops. This policy ensures fairness to all participants, supports effective workshop administration, and maintains the integrity of workshop operations by outlining when and how credits may be issued, transferred, or redeemed.
 
 ---
 
 ## Scope
 
-This policy applies to:
-- All PBT Certification Teachers Workshops (including all levels and PCT workshops)
-- All workshop participants and customer service staff handling workshop credit requests
-- All regions and tutors, with specific provisions for certain tutors as outlined below
+This policy applies to all PBT Certification Teachers Workshops and PCT Teachers Certification Workshops, including all workshop levels and locations. It covers all workshop participants, customer service staff, area managers, and tutors involved in the administration of workshop bookings, cancellations, and credit requests.
 
 ---
 
 ## Policy
 
-### 1. General Principles
+### 1. Eligibility for Workshop Credit
 
-- Credits may be issued for future workshops under specific circumstances, primarily when requests are made well in advance of the scheduled workshop date.
-- The ability to issue a credit depends on the timing of the request and, in some cases, the tutor assigned to the workshop.
-- Credits are not equivalent to refunds and are non-transferable except as specified below.
+#### a. Requests More Than 15 Days Before Workshop
 
-### 2. Eligibility for Workshop Credit
+- **General Rule:** Participants who request to cancel their enrolment more than 15 days before the workshop may be eligible for a credit towards a future workshop.
+- **Tutor-Specific Rule:** If the workshop tutor is Adam, Michele, or Bev, the credit can only be used for a future workshop conducted by the same tutor, as tutors are financially independent.
+- **Other Tutors:** Credits for workshops with other tutors may be used for any future workshop, subject to availability.
 
-#### a. Requests More Than 15 Days Before the Workshop
+#### b. Requests Within 15 Days of Workshop
 
-- **If the assigned tutor is NOT Adam, Michele, or Bev:**
-  - Participants may request to cancel their enrolment and receive a credit for a future workshop.
-  - Upon confirmation, the participant’s enrolment will be cancelled, and a credit will be recorded for future use.
-  - The participant may redeem this credit for any future workshop, subject to availability.
+- **Less Than 15 Days but More Than 72 Hours Before Workshop:** Credits are not available. Instead, participants may:
+  - Transfer their position to another individual (details must be provided at least 72 hours before the workshop).
+  - Receive a coupon for one year of online training, which includes the opportunity to apply for certification through the online membership.
+- **Less Than 72 Hours Before Workshop or Day Of/Post-Workshop:** Credits are not available. The only offer is a coupon for one year of online training.
 
-- **If the assigned tutor IS Adam, Michele, or Bev:**
-  - Participants may request to cancel their enrolment and receive a credit, but the credit can only be used for a future workshop conducted by the same tutor.
-  - This restriction exists because these tutors are financially independent from each other.
-  - Upon confirmation, the participant’s enrolment will be cancelled, and a credit will be recorded for use with the same tutor.
+### 2. Procedure for Requesting and Issuing Credits
 
-#### b. Requests Within 15 Days but More Than 72 Hours Before the Workshop
+#### a. Submitting a Credit Request
 
-- Credits are generally not issued within this time frame due to logistical and financial commitments.
-- Participants may transfer their position to another individual, provided they supply the replacement’s name, email address, and phone number at least 72 hours before the workshop.
-- Alternatively, participants may request a coupon for one year of online training, which allows self-paced study and application for certification.
+- Participants must contact customer service to request a credit, stating their reason for cancellation and providing relevant details.
+- Customer service staff must verify the workshop date, tutor, and eligibility based on this policy.
 
-#### c. Requests Within 72 Hours of the Workshop or After the Workshop
+#### b. Processing Credit Requests
 
-- Credits for future workshops will not be issued.
-- Participants may receive a coupon for one year of online training as an alternative.
-- No credits or refunds will be provided for non-attendance on the day of, or after, the workshop.
+- If eligible, customer service will:
+  - Cancel the participant’s enrolment in the current workshop.
+  - Issue a credit for a future workshop (or for a future workshop with the same tutor, if applicable).
+  - Update workshop admin notes and open up one position in the workshop.
+  - Notify the area manager of the change.
+  - Inform the participant of the credit and the process for redeeming it.
 
-### 3. Credit Redemption
+#### c. Redeeming Credits
 
-- To redeem a credit, participants must contact customer service with their request to enrol in a specific workshop.
-- Credits are subject to workshop availability; if the desired workshop is sold out, the participant will be added to the waitlist.
-- For credits restricted to a specific tutor, the workshop must be conducted by that tutor.
+- To redeem a credit, participants must contact customer service when they wish to book a future workshop.
+- Credits are subject to workshop availability. If the desired workshop is sold out, the participant will be added to the waitlist.
+- For tutor-specific credits, the future workshop must be conducted by the same tutor.
 
-### 4. Non-Transferability
+### 3. Non-Eligibility and Alternative Options
 
-- Credits are issued to the original participant and are not transferable to another person, except in the case of a participant transferring their workshop position to someone else within the permitted time frame (more than 72 hours before the workshop).
-
-### 5. Alternative Options
-
-- If a participant is unable to attend and is not eligible for a credit, they may:
-  - Transfer their position to another individual (with required details provided at least 72 hours in advance).
-  - Request a coupon for one year of online training.
+- Credits are not issued for cancellations made within 15 days of the workshop (unless the position is transferred to another participant at least 72 hours before the workshop).
+- No credits are issued for cancellations on the day of, or after, the workshop.
+- In cases where credits are not available, participants may be offered:
+  - The option to transfer their position to another individual (with at least 72 hours’ notice).
+  - A coupon for one year of online training.
 
 ---
 
 ## Responsibilities
 
-- **Customer Service Staff:**  
-  - Verify the date of the workshop and the assigned tutor before processing any credit request.
-  - Communicate policy details and available options to participants clearly and compassionately.
-  - Upon confirmation of a credit, update the workshop administration system, open up the vacated position, and notify the area manager.
-  - For credits restricted to specific tutors, ensure the participant is informed of this limitation.
-
-- **Area Managers:**  
-  - Monitor workshop lists for participants with credits and ensure accurate records are maintained.
-  - Support customer service staff in resolving complex or exceptional cases.
-
-- **Policy Owner (Kaisey):**  
-  - Oversee the implementation and periodic review of this policy.
-  - Address escalated issues and approve exceptions where justified.
+- **Participants:** Must notify customer service in writing of their intent to cancel and request a credit, providing all required information.
+- **Customer Service Staff:** Must verify eligibility, process cancellations, issue credits or alternatives as per policy, update administrative records, and communicate outcomes to participants and area managers.
+- **Area Managers:** Must be informed of all cancellations and credit issuances, and ensure workshop capacity is updated accordingly.
+- **Policy Owner (Kaisey):** Responsible for overseeing the implementation of this policy, updating it as required, and ensuring compliance.
 
 ---
 
 ## Notes / Exceptions
 
 - **Tutor-Specific Credits:** Credits issued for workshops with Adam, Michele, or Bev can only be redeemed for future workshops run by the same tutor due to financial independence.
-- **No Credits for Late or Post-Workshop Requests:** No credits will be issued for requests made within 72 hours of the workshop or after the workshop date, regardless of circumstances.
-- **Online Training Offer:** In cases where credits cannot be issued, a coupon for one year of online training is available as an alternative.
-- **Waitlist Management:** If a participant wishes to use a credit for a sold-out workshop, they will be added to the waitlist and notified if a position becomes available.
+- **Transfer of Position:** If a participant cannot attend and is within the 15-day window, they may transfer their position to another person by providing the new participant’s details at least 72 hours before the workshop.
+- **Online Training Offer:** When credits are not available, a coupon for one year of online training is offered as an alternative.
+- **No Retroactive Credits:** Credits cannot be issued after the workshop has occurred or on the day of the workshop.
 
 ---
 
-This policy is effective immediately and supersedes any previous informal practices regarding workshop credits. All staff must adhere strictly to these guidelines to ensure fairness and consistency for all PBT workshop participants.
+This policy is effective immediately and supersedes any previous workshop credit guidelines. All staff must adhere strictly to these procedures to ensure consistency and fairness for all PBT workshop participants.
