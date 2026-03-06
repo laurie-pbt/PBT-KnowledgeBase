@@ -3,7 +3,7 @@ policy_id: customer-service_handling-missing-email-workshop-confirmations
 title: "Handling Missing Email Workshop Confirmations"
 status: draft
 type: perpetual
-domain: Customer Service
+domain: customer-service
 effective_from:
 effective_to:
 priority: 50
