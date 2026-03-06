@@ -3,7 +3,7 @@ policy_id: workshops_online-vs-in-person-workshop-attendance-policy
 title: "Online vs In-Person Workshop Attendance Policy"
 status: draft
 type: perpetual
-domain: Workshops
+domain: workshops
 effective_from:
 effective_to:
 priority: 50
