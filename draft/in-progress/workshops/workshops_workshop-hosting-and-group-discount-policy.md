@@ -3,7 +3,7 @@ policy_id: workshops_workshop-hosting-and-group-discount-policy
 title: "Workshop Hosting and Group Discount Policy"
 status: draft
 type: perpetual
-domain: Workshops
+domain: workshops
 effective_from:
 effective_to:
 priority: 50
