@@ -4,8 +4,10 @@ title: "Handling Missing Email Workshop Confirmations"
 status: draft
 type: perpetual
 domain: customer-service
-effective_from:
+effective_from: 2026-03-06
 effective_to:
+# TODO(future): notify policy owner when review_date is reached
+review_date: 2027-03-06
 priority: 50
 owner_team: "Christian"
 approvers:
@@ -23,40 +25,22 @@ tags:
 
 # Handling Missing Email Workshop Confirmations
 
-**Department:** Customer Service
+**Department:** Customer Service  
+**Owner:** Christian  
 
-**Policy Owner:** Christian
+## Policy Statement  
+Customer service staff must verify workshop registrations when customers report missing email confirmations to ensure accurate communication and customer satisfaction.
 
-## Purpose  
+## Procedure  
+1. Check the registration list for the customer’s name.  
+2. If the name is not found, clarify registration details with the customer to confirm whether they have registered.  
+3. If the customer is registered, verify the email address on file and correct any errors as needed.  
+4. Resend the confirmation email to the verified address.  
+5. Advise the customer to check their spam or junk email folders for the confirmation.  
 
-This policy establishes the standardized process for addressing situations where customers report not receiving their workshop confirmation emails. It ensures timely verification, correction, and communication to maintain excellent customer service and accurate registration records.
-
-## Scope  
-
-This policy applies to all Customer Service team members responsible for managing workshop registrations and communications for Progressing Ballet Technique (PBT) workshops.
-
-## Procedures
-
-**Verification of Registration**
-
-- - Upon receiving a customer inquiry about a missing confirmation email, check the workshop registration list for the customer's name.
-- - Verify the email address on file for accuracy. If incorrect, update the email address accordingly.
-**Resending Confirmation**
-
-- - Resend the workshop confirmation email to the verified or corrected email address
-I**f Registration Not Found**
-
-- - Clarify the customer's details, including full name and workshop date.
-- - Check for alternate names or spellings under which the customer may have registered.
-- - Request payment confirmation or proof if necessary to verify registration.
-**Customer Guidance**
-
-- - Advise customers to check their spam or junk email folders for the confirmation email.
-- - Provide assistance or escalate to the appropriate department if issues persist.
 ## Responsibilities  
+- Customer service staff are responsible for following this procedure promptly and accurately.  
+- The Customer Service Manager should oversee adherence to this policy and address any recurring issues.
 
-- - - Customer Service team members must follow this policy to ensure accurate communication and customer satisfaction.
-- - - The Policy Owner is responsible for maintaining and updating this policy as needed.
 ## Review  
-
-This policy will be reviewed annually or as required to ensure continued effectiveness.
+This policy will be reviewed annually or as needed to ensure continued effectiveness.
