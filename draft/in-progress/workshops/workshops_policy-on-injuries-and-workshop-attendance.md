@@ -3,7 +3,7 @@ policy_id: workshops_policy-on-injuries-and-workshop-attendance
 title: "Policy on Injuries and Workshop Attendance"
 status: draft
 type: perpetual
-domain: Workshops
+domain: workshops
 effective_from:
 effective_to:
 priority: 50
