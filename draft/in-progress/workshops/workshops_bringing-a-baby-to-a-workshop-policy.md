@@ -3,7 +3,7 @@ policy_id: workshops_bringing-a-baby-to-a-workshop-policy
 title: "Bringing a Baby to a Workshop Policy"
 status: draft
 type: perpetual
-domain: Workshops
+domain: workshops
 effective_from:
 effective_to:
 priority: 50
