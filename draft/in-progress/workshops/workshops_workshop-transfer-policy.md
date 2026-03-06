@@ -3,7 +3,7 @@ policy_id: workshops_workshop-transfer-policy
 title: "Workshop Transfer Policy"
 status: draft
 type: perpetual
-domain: Workshops
+domain: workshops
 effective_from:
 effective_to:
 priority: 50
