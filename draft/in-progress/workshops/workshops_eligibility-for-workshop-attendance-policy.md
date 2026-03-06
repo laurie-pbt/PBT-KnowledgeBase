@@ -3,7 +3,7 @@ policy_id: workshops_eligibility-for-workshop-attendance-policy
 title: "Eligibility for Workshop Attendance Policy"
 status: draft
 type: perpetual
-domain: Workshops
+domain: workshops
 effective_from:
 effective_to:
 priority: 50
