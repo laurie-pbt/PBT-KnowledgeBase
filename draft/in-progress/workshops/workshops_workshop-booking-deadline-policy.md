@@ -4,8 +4,10 @@ title: "Workshop Booking Deadline Policy"
 status: draft
 type: perpetual
 domain: workshops
-effective_from:
+effective_from: 2026-03-10
 effective_to:
+# TODO(future): notify policy owner when review_date is reached
+review_date: 2027-03-10
 priority: 50
 owner_team: "Kaisey"
 approvers:
@@ -31,71 +33,79 @@ tags:
 
 ## Purpose
 
-The purpose of this policy is to establish clear guidelines regarding the deadline for booking into Progressing Ballet Technique (PBT) workshops. This ensures transparency for customers and supports efficient workshop management, including capacity planning and customer communications. The policy aims to balance customer flexibility with the need to manage workshop logistics and avoid overbooking or late registrations that cannot be accommodated.
-
----
+The purpose of this policy is to provide clear guidance on the deadlines and procedures for booking a place in a Progressing Ballet Technique (PBT) workshop. This ensures fairness, efficient workshop management, and clear communication with prospective attendees regarding workshop availability and booking timelines.
 
 ## Scope
 
-This policy applies to:
-- All PBT Certification Teachers Workshops and PCT Teachers Certification Workshops, including all levels and locations.
-- All staff involved in customer service, workshop administration, and workshop management.
-- All scenarios where a customer inquires about booking deadlines or attempts to register for a workshop.
-
----
+This policy applies to all PBT Certification Teachers Workshops and PCT Teachers Certification Workshops managed by the Workshops department. It is relevant to all customer service staff, area managers, and any staff involved in workshop administration and customer communications.
 
 ## Policy
 
-### No Fixed Booking Deadline
+### General Booking Deadlines
 
-- PBT workshops do **not** have a set, universal booking deadline.
-- Customers may book into a workshop at any time up to the point when the workshop is sold out or registration is administratively closed.
+- **No Fixed Booking Deadline:**  
+  PBT workshops do not have a set, universal deadline for bookings. Workshops remain open for registration until all positions are filled or until the workshop commences.
 
-### Workshop Capacity and Availability
+- **First-Come, First-Served Basis:**  
+  Places in workshops are allocated on a first-come, first-served basis. Once a workshop reaches capacity, it is marked as sold out and no further bookings are accepted.
 
-- Workshops are filled on a first-come, first-served basis.
-- Once a workshop reaches full capacity, no further bookings will be accepted. Customers interested in sold-out workshops must be added to a wait-list.
-- Staff must check current workshop availability before advising customers on booking possibilities.
+### Customer Enquiries About Booking Deadlines
 
-### Recommendation to Book Early
+- **Standard Response:**  
+  When a customer enquires about a booking deadline, staff must inform them that there is no fixed deadline, but workshops often sell out. Customers should be encouraged to book as early as possible to avoid disappointment.
 
-- Staff must advise customers that workshops often sell out and recommend booking as early as possible to secure a place.
-- If a customer inquires about waiting to book, staff should provide guidance based on the current number of available spots and the observed rate of bookings for that specific workshop.
+- **If Workshop Has Few Positions Left:**  
+  If a workshop is nearing capacity, staff must advise the customer that only a few positions remain and that it is likely to sell out soon. Staff must clarify that positions cannot be held and booking early is the only way to secure a place.
 
-### Communication Guidelines
-
-- If there are only a few positions left in a workshop, staff must inform the customer that availability is limited and that the workshop is likely to sell out soon.
-- If there are many positions left and the customer has indicated a preferred booking timeframe, staff may reassure the customer, while clarifying that availability cannot be guaranteed.
-- Staff must not hold or reserve positions for customers without a completed booking.
+- **If Workshop Has Many Positions Left:**  
+  If there are many positions available and the customer has indicated a specific timeframe for booking, staff may advise—based on current booking trends—whether it appears safe to wait. However, staff must always clarify that availability cannot be guaranteed.
 
 ### Last-Minute Bookings
 
-- For bookings made within 5 days of the workshop, staff must advise customers of any special requirements, such as the need to source required equipment in time for the workshop.
-- If a customer attempts to book after the administrative close of registrations (if applicable), staff must inform the customer that registration is closed and offer to add them to the wait-list if appropriate.
+- **Bookings Close at Workshop Start:**  
+  Bookings remain open until the workshop commences, provided there are available positions.
 
----
+- **Equipment Advisory for Late Bookings:**  
+  If a customer books within 5 days of the workshop, staff must advise them of the equipment required and ensure they have sufficient time to obtain it. If equipment is not available for purchase at the workshop, staff must provide a list of required items and guidance on sourcing them.
+
+### Sold Out Workshops
+
+- **Waitlist Management:**  
+  When a workshop is sold out, staff must inform the customer and offer to add them to the waitlist. Customers on the waitlist will be contacted if positions become available or if workshop capacity is increased.
+
+### Special Booking Scenarios
+
+- **Manual Bookings and Payment Methods:**  
+  For manual bookings (e.g., bank transfer, payment plans, or split payments), staff must ensure that all payments are received and processed before the workshop commences. Manual bookings are subject to additional requirements as outlined in related payment policies.
 
 ## Responsibilities
 
 - **Customer Service Staff:**  
-  - Respond promptly and accurately to customer inquiries regarding workshop booking deadlines.
-  - Check and communicate current workshop availability.
-  - Add customers to the wait-list if a workshop is sold out.
-  - Advise customers of equipment requirements for late bookings.
-- **Workshop Administrators:**  
-  - Maintain up-to-date records of workshop capacity and bookings.
-  - Close registrations when a workshop is full or at the administrative cut-off, if applicable.
-- **Policy Owner (Kaisey):**  
-  - Ensure this policy is up to date and communicated to all relevant staff.
-  - Review and update the policy as needed in response to operational changes.
+  - Respond promptly and accurately to all booking deadline enquiries.
+  - Check current workshop availability before advising customers.
+  - Encourage early booking to avoid disappointment.
+  - Manage waitlists for sold out workshops.
+  - Advise late bookers about equipment requirements and sourcing.
 
----
+- **Area Managers:**  
+  - Oversee workshop capacity and waitlist management.
+  - Support customer service staff with up-to-date information on workshop status.
+
+- **Policy Owner (Kaisey):**  
+  - Ensure this policy is kept up to date and staff are trained on its application.
+  - Review and update procedures as necessary to reflect changes in workshop management.
 
 ## Notes / Exceptions
 
-- In rare cases where a workshop has unique booking requirements or an administrative cut-off date (e.g., due to venue or tutor constraints), staff must communicate these specifics to customers clearly and in advance.
-- This policy does not supersede any legal or contractual obligations regarding workshop registrations.
+- **No Position Holds:**  
+  Staff are not permitted to hold or reserve workshop positions for customers without payment.
+
+- **Workshops May Sell Out at Any Time:**  
+  Due to high demand, workshops may sell out unexpectedly. Staff must always communicate that availability is not guaranteed until booking and payment are complete.
+
+- **Special Circumstances:**  
+  In rare cases where exceptions may be considered (e.g., technical issues preventing booking), these must be escalated to the area manager or policy owner for approval.
 
 ---
 
-**End of Policy**
+This policy ensures consistent, fair, and transparent communication regarding workshop booking deadlines for all Progressing Ballet Technique workshops.
