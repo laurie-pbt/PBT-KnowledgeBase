@@ -17,8 +17,6 @@ applies_to:
 ---
 
 
-# Certified Teacher Directory Registration Policy
-
 ## Purpose
 
 To outline the process and requirements for certified teachers to register and be included in the Progressing Ballet Technique (PBT) teachers' directory, and to detail the associated benefits, procedures, and communication standards.
@@ -36,8 +34,7 @@ This policy applies to all individuals who possess a valid PBT Level 1 certifica
 5. Certified teachers listed in the directory are entitled to a one-month free trial of PBT online training. Teachers may cancel within this period to avoid any charges.
 6. Teachers who have not received a free month coupon should contact the Customer Service Team to obtain their unique code.
 7. Existing members may submit their certification for directory inclusion by selecting 'Submit certificate for directory' in the member's area menu.
-8. When responding to customer queries regarding the timing of directory updates, staff should advise that processing can take a few days. Customers should be encouraged to wait a few days for their certification to be processed in the system before reaching out again if their profile has not been updated.
-
+8. When responding to customer queries regarding the timing of directory updates, staff should advise that processing can take a few days. Customers should be encouraged to wait 24-48 hours for their certification to be processed in the system before reaching out again if their profile has not been updated.
 ## Exceptions
 
 There are no exceptions to the requirement for a valid PBT Level 1 certification for directory inclusion. Any requests for alternative consideration must be submitted in writing to the Head of Workshops for review.
