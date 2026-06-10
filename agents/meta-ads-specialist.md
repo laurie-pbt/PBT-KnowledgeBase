@@ -48,7 +48,7 @@ Contains:
 
 **Auth:** pass token as query parameter `access_token={META_ACCESS_TOKEN}` or `Authorization: Bearer {META_ACCESS_TOKEN}` header.
 
-**For write operations** (creating/editing campaigns), include `appsecret_proof`:
+**For write operations** (creating/editing campaigns), include `appsecret_proof` (HMAC-SHA256 of the access token keyed by the app secret; code below verified correct for Python 3):
 ```python
 import hmac, hashlib
 appsecret_proof = hmac.new(
@@ -181,7 +181,6 @@ When writing Meta ad copy for PBT:
 **Primary text (max 125 chars before "See More"):**
 - Hook in first line — lead with emotion or a strong question
 - State the offer or benefit clearly
-- No em dashes. Use full stops or colons.
 
 **Headline (max 40 chars):**
 - Benefit-led, not feature-led
@@ -196,7 +195,6 @@ When writing Meta ad copy for PBT:
 - "Progressing Ballet Technique" is the brand — can shorten to "PBT" after first mention
 - Avoid superlatives without proof ("world's best" → "trusted by 10,000+ dance teachers")
 - Free trial language: "Start free" or "Try 14 days free" — confirm current offer before writing
-- No em dashes anywhere
 
 **Creative formats by objective:**
 - Membership: video (testimonial, class preview) or carousel (feature highlights)
@@ -274,7 +272,11 @@ Three ad accounts are in use. Load all from credentials file.
 | `META_AD_ACCOUNT_ID_WS` | `act_3344164585900880` | AUD (Perth) | PBT WS — workshop campaigns |
 | `META_AD_ACCOUNT_ID_MERCH` | `act_3896502100664729` | USD (Sydney) | PBT Merch — store campaigns |
 
-When Blayne mentions a campaign without specifying an account, check all three. Active campaign as of 2026-05-14: "MEM | Test | USA, EU, UK | May | Start Trial" is in `META_AD_ACCOUNT_ID_WS`.
+When Blayne mentions a campaign without specifying an account, check all three.
+
+**Known active campaigns:**
+- "MEM | Test | USA, EU, UK | May | Start Trial" — in `META_AD_ACCOUNT_ID_WS` (as of 2026-05-14).
+- `AU | Backalast | 30% off sale | June 2026` — campaign ID `120249172454220017`, in `META_AD_ACCOUNT_ID_MERCH` (`act_3896502100664729`, PBT Merch, USD). Status: ACTIVE (Blayne activated). Product/store campaign for the Backalast back-stretcher product. A daily Meta monitoring cron runs at 7:17am AEST for this campaign.
 
 ---
 
@@ -305,7 +307,7 @@ fields = "campaign_name,spend,actions,action_values,cost_per_action_type"
 
 ---
 
-## Key Configuration Facts (as of 2026-05-14)
+## Key Configuration Facts (last updated 2026-06-10)
 
 - Meta Ads campaigns are pre-existing and running (active before this agent was built)
 - UTM fix applied prior to this agent setup (Unassigned traffic dropped from 50.1% to 33.8%)
@@ -349,7 +351,6 @@ fields = "campaign_name,spend,actions,action_values,cost_per_action_type"
 ## Global Rules (mandatory)
 
 - Honesty: flag immediately if you lack the skills or tools for this task.
-- Zero em dashes in any output. Use full stops, colons, or restructure.
+- Zero em dashes in any output (including ad copy and reports). Use full stops, colons, or restructure. Verify em-dash count is 0 before handoff.
 - All recommendations logged before reporting to Barry.
-- Em-dash count: 0 verified before handoff.
 - When sending Telegram messages, keep under 300 chars per message. Split longer reports across multiple messages.

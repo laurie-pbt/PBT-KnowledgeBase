@@ -63,7 +63,7 @@ access_token = json.loads(urllib.request.urlopen(req).read())['access_token']
 - Manager ID: `1781293605` — same file
 - Developer token: `EsfZv-dJfeJbPR4XoBbLVQ` — same file
 - Required headers: `Authorization: Bearer <access_token>`, `developer-token`, `login-customer-id`
-- Use API version v24 (upgraded 2026-05-29 — v20 deprecated, stops accepting requests 2026-06-10).
+- Use API version v24. Migration from v20 completed 2026-05-29. v20 is fully retired (stopped accepting requests 2026-06-10).
 - For mutations, POST to `/conversionActions:mutate` (or other endpoint) with the same auth headers.
 
 **GA4 Data API:**
@@ -154,7 +154,6 @@ When writing Google Ads copy:
 **Descriptions (max 90 chars each):**
 - State the offer clearly
 - Include a call to action
-- No em dashes. Use full stops or colons.
 
 **PBT-specific copy rules:**
 - Use "dancers" or "dance teachers" not "students" (unless targeting students explicitly)
@@ -164,9 +163,11 @@ When writing Google Ads copy:
 
 ---
 
-## Key Configuration Facts (as of 2026-05-11)
+## Key Configuration Facts (last updated 2026-06-10)
 
-These should be honoured when analysing data or making recommendations:
+These should be honoured when analysing data or making recommendations. Per-item dates below indicate when each fact was last confirmed.
+
+### Tracking configuration
 
 **Google Ads tracking template — Final URL Suffix at account level:**
 ```
@@ -178,6 +179,8 @@ Custom parameters in use:
 - Ad-group-level `_agname`: human-readable ad group name (e.g. `Main-Audience`)
 
 **YouTube Studio Promote campaigns:** REMOVED. Do not include in daily reports, do not create a YouTube section, do not reference YouTube Promote anywhere in the report output. No exceptions.
+
+### Daily report required sections
 
 **INFRA section in daily reports (added 2026-05-26):**
 At the end of each daily report, add an INFRA block. Run `docker ps --format "{{.Names}} {{.Status}}"` and curl each app. Report green/amber/red per app. Required apps to check every day:
@@ -215,10 +218,13 @@ PBT MERCH ($USD):
 ```
 
 
-**Active campaigns (as of 2026-05-18):**
+### Campaign state
+
+**Active campaigns (as of 2026-06-10):**
 - `Sales-Search-PBTMain` (Search, ENABLED) — `_campname=Sales-Search-PBTMain`. Budget unchanged. 4 user_list audiences attached (Workshop viewers, Membership trial starters, Engaged non-purchasers as observation; Recent purchasers as negative exclusion).
 - `PM | PBT | March 2025 | 2x Assets` (Performance Max, ENABLED) — `_campname=PM-PBT-2x-Assets`. Budget scaled $25 → $50/day on 2026-05-12. Reminder 2026-05-19 to ask Blayne before switching from Maximize Conversions to Target ROAS 350%.
 - `PM | PBT | Membership | 2026` (Performance Max, ENABLED) — $30/day. Membership-focused PMax.
+- `backalast-30off-au-search` (Search, ENABLED). Campaign ID 23932051858. Budget AUD $40/day. Geo: Australia only. Ad group: `backalast-30off`. 11 keywords: 3 exact ([backalast], [pbt backalast], [backalast tool]), 3 broad (backalast dance tool, pbt roller tool, ballet back tool), 5 phrase ("best lower back stretcher", "back stretcher pain", "thoracic back stretcher", "thoracic stretcher", "ballet stretcher"). Promotion asset attached: 30% off Backalast. This is NOT the same as Sales-Search-PBTMain (which targets 11 countries). This campaign is AU-only.
 
 **Paused campaigns:**
 - `WS - Vancouver - 31 May 2026 - Bev` (Search, PAUSED 2026-05-18 at Blayne's instruction) — do NOT include in daily reports.
@@ -228,13 +234,16 @@ Read `/home/blayne-agent/barry-state/marketing-budget-changes.md` before generat
 
 Today's open comparison: PMax `$25 → $50/day` on 2026-05-12. Pre-baseline 4.11x ROAS / $688.69 value / 7d. Post-target ≥3.5x ROAS, ≥10 conv. First check: 2026-05-19.
 
-**Active ad groups (Sales-Search-PBTMain only — PMax has asset groups):**
-- `Main Audience` (renamed 2026-05-11, was "Progressing Ballet Technique (PBT)") — `_agname=Main-Audience`
+**Active ad groups (Search campaigns. PMax campaigns have asset groups, not ad groups):**
+- Sales-Search-PBTMain: `Main Audience` (renamed 2026-05-11, was "Progressing Ballet Technique (PBT)") — `_agname=Main-Audience`
+- backalast-30off-au-search: `backalast-30off`
 
 **Removed campaigns (2026-05-12, no longer active):**
 - `Traffic PBT.dance Campaign` REMOVED
 - `Performance Max - Workshop Purchases` REMOVED (asset archive saved at /home/blayne-agent/agent-output/marketing/archive-pmax-workshop-purchases-assets-2026-05-12.md)
 - `Black Friday 2025 Link` ad group remains paused inside Sales-Search-PBTMain.
+
+### Conversion actions
 
 **Primary conversion actions (post-cleanup):**
 - `Progressing Ballet Technique (web) purchase` (GA4 import, ID 6950171884) — dynamic per-transaction value
@@ -323,7 +332,6 @@ When Barry activates the Marketing Dashboard project, hand over all logged recom
 ## Global Rules (mandatory)
 
 - Honesty: flag immediately if you lack the skills or tools for this task.
-- Zero em dashes in any output. Use full stops, colons, or restructure.
+- Zero em dashes in any output (including ad copy and reports). Use full stops, colons, or restructure. Verify em-dash count is 0 before handoff.
 - All recommendations logged to file before reporting to Barry.
-- Em-dash count: 0 verified before handoff.
 - When sending Telegram messages, keep under 300 chars per message. Split longer reports across multiple messages.
